@@ -1,0 +1,45 @@
+c:\users\saad\documents\visual studio 2013\Projects\JsonSample\JsonSample\Bin\Debug\Assets\ApplicationIcon.png
+c:\users\saad\documents\visual studio 2013\Projects\JsonSample\JsonSample\Bin\Debug\Assets\Tiles\FlipCycleTileLarge.png
+c:\users\saad\documents\visual studio 2013\Projects\JsonSample\JsonSample\Bin\Debug\Assets\Tiles\FlipCycleTileMedium.png
+c:\users\saad\documents\visual studio 2013\Projects\JsonSample\JsonSample\Bin\Debug\Assets\Tiles\FlipCycleTileSmall.png
+c:\users\saad\documents\visual studio 2013\Projects\JsonSample\JsonSample\Bin\Debug\Assets\Tiles\IconicTileMediumLarge.png
+c:\users\saad\documents\visual studio 2013\Projects\JsonSample\JsonSample\Bin\Debug\Assets\Tiles\IconicTileSmall.png
+c:\users\saad\documents\visual studio 2013\Projects\JsonSample\JsonSample\Bin\Debug\JsonSample.dll
+c:\users\saad\documents\visual studio 2013\Projects\JsonSample\JsonSample\Bin\Debug\JsonSample.pdb
+c:\users\saad\documents\visual studio 2013\Projects\JsonSample\JsonSample\Bin\Debug\AppManifest.xaml
+c:\users\saad\documents\visual studio 2013\Projects\JsonSample\JsonSample\Bin\Debug\Properties\WMAppManifest.xml
+c:\users\saad\documents\visual studio 2013\Projects\JsonSample\JsonSample\Bin\Debug\JsonSample_Debug_AnyCPU.xap
+c:\users\saad\documents\visual studio 2013\Projects\JsonSample\JsonSample\obj\Debug\App.g.cs
+c:\users\saad\documents\visual studio 2013\Projects\JsonSample\JsonSample\obj\Debug\MainPage.g.cs
+c:\users\saad\documents\visual studio 2013\Projects\JsonSample\JsonSample\obj\Debug\JsonSample.g.resources
+c:\users\saad\documents\visual studio 2013\Projects\JsonSample\JsonSample\obj\Debug\JsonSample.Resources.AppResources.resources
+c:\users\saad\documents\visual studio 2013\Projects\JsonSample\JsonSample\obj\Debug\JsonSample.csproj.GenerateResource.Cache
+c:\users\saad\documents\visual studio 2013\Projects\JsonSample\JsonSample\obj\Debug\JsonSample.dll
+c:\users\saad\documents\visual studio 2013\Projects\JsonSample\JsonSample\obj\Debug\JsonSample.pdb
+c:\users\saad\documents\visual studio 2013\Projects\JsonSample\JsonSample\obj\Debug\XapCacheFile.xml
+c:\users\saad\documents\visual studio 2013\Projects\JsonSample\JsonSample\Bin\Debug\Newtonsoft.Json.WindowsPhone.dll
+c:\users\saad\documents\visual studio 2013\Projects\JsonSample\JsonSample\Bin\Debug\Newtonsoft.Json.WindowsPhone.pdb
+c:\users\saad\documents\visual studio 2013\Projects\JsonSample\JsonSample\Bin\Debug\Newtonsoft.Json.WindowsPhone.xml
+c:\users\saad\documents\visual studio 2013\Projects\JsonSample\JsonSample\obj\Debug\JsonSample.csprojResolveAssemblyReference.cache
+c:\users\sergey epifanov\documents\visual studio 2013\Samples\JSON Parsing Sample1\JsonSample\Bin\Debug\Assets\ApplicationIcon.png
+c:\users\sergey epifanov\documents\visual studio 2013\Samples\JSON Parsing Sample1\JsonSample\Bin\Debug\Assets\Tiles\FlipCycleTileLarge.png
+c:\users\sergey epifanov\documents\visual studio 2013\Samples\JSON Parsing Sample1\JsonSample\Bin\Debug\Assets\Tiles\FlipCycleTileMedium.png
+c:\users\sergey epifanov\documents\visual studio 2013\Samples\JSON Parsing Sample1\JsonSample\Bin\Debug\Assets\Tiles\FlipCycleTileSmall.png
+c:\users\sergey epifanov\documents\visual studio 2013\Samples\JSON Parsing Sample1\JsonSample\Bin\Debug\Assets\Tiles\IconicTileMediumLarge.png
+c:\users\sergey epifanov\documents\visual studio 2013\Samples\JSON Parsing Sample1\JsonSample\Bin\Debug\Assets\Tiles\IconicTileSmall.png
+c:\users\sergey epifanov\documents\visual studio 2013\Samples\JSON Parsing Sample1\JsonSample\Bin\Debug\JsonSample.dll
+c:\users\sergey epifanov\documents\visual studio 2013\Samples\JSON Parsing Sample1\JsonSample\Bin\Debug\JsonSample.pdb
+c:\users\sergey epifanov\documents\visual studio 2013\Samples\JSON Parsing Sample1\JsonSample\Bin\Debug\AppManifest.xaml
+c:\users\sergey epifanov\documents\visual studio 2013\Samples\JSON Parsing Sample1\JsonSample\Bin\Debug\Properties\WMAppManifest.xml
+c:\users\sergey epifanov\documents\visual studio 2013\Samples\JSON Parsing Sample1\JsonSample\Bin\Debug\JsonSample_Debug_AnyCPU.xap
+c:\users\sergey epifanov\documents\visual studio 2013\Samples\JSON Parsing Sample1\JsonSample\Bin\Debug\Newtonsoft.Json.WindowsPhone.pdb
+c:\users\sergey epifanov\documents\visual studio 2013\Samples\JSON Parsing Sample1\JsonSample\Bin\Debug\Newtonsoft.Json.WindowsPhone.xml
+c:\users\sergey epifanov\documents\visual studio 2013\Samples\JSON Parsing Sample1\JsonSample\obj\Debug\JsonSample.csprojResolveAssemblyReference.cache
+c:\users\sergey epifanov\documents\visual studio 2013\Samples\JSON Parsing Sample1\JsonSample\obj\Debug\App.g.cs
+c:\users\sergey epifanov\documents\visual studio 2013\Samples\JSON Parsing Sample1\JsonSample\obj\Debug\MainPage.g.cs
+c:\users\sergey epifanov\documents\visual studio 2013\Samples\JSON Parsing Sample1\JsonSample\obj\Debug\JsonSample.g.resources
+c:\users\sergey epifanov\documents\visual studio 2013\Samples\JSON Parsing Sample1\JsonSample\obj\Debug\JsonSample.Resources.AppResources.resources
+c:\users\sergey epifanov\documents\visual studio 2013\Samples\JSON Parsing Sample1\JsonSample\obj\Debug\JsonSample.csproj.GenerateResource.Cache
+c:\users\sergey epifanov\documents\visual studio 2013\Samples\JSON Parsing Sample1\JsonSample\obj\Debug\JsonSample.dll
+c:\users\sergey epifanov\documents\visual studio 2013\Samples\JSON Parsing Sample1\JsonSample\obj\Debug\JsonSample.pdb
+c:\users\sergey epifanov\documents\visual studio 2013\Samples\JSON Parsing Sample1\JsonSample\obj\Debug\XapCacheFile.xml
