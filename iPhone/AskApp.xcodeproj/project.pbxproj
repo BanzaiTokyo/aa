@@ -1,0 +1,452 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2486F5AA10A64E47A60DBC8B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84460320AC474CA5AB5353A0 /* libPods.a */; };
+		8E1D41EE197EECCC00CF68D6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E1D41ED197EECCC00CF68D6 /* Foundation.framework */; };
+		8E1D41F0197EECCC00CF68D6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E1D41EF197EECCC00CF68D6 /* CoreGraphics.framework */; };
+		8E1D41F2197EECCC00CF68D6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E1D41F1197EECCC00CF68D6 /* UIKit.framework */; };
+		8E1D41F8197EECCC00CF68D6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8E1D41F6197EECCC00CF68D6 /* InfoPlist.strings */; };
+		8E1D41FA197EECCC00CF68D6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E1D41F9197EECCC00CF68D6 /* main.m */; };
+		8E1D41FE197EECCC00CF68D6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E1D41FD197EECCC00CF68D6 /* AppDelegate.m */; };
+		8E1D4201197EECCC00CF68D6 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E1D41FF197EECCC00CF68D6 /* Main_iPhone.storyboard */; };
+		8E1D4207197EECCC00CF68D6 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E1D4206197EECCC00CF68D6 /* HomeViewController.m */; };
+		8E1D4209197EECCC00CF68D6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E1D4208197EECCC00CF68D6 /* Images.xcassets */; };
+		8E1D4227197FAD9200CF68D6 /* AskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E1D4226197FAD9200CF68D6 /* AskViewController.m */; };
+		8E1D422A197FADA200CF68D6 /* AnswerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E1D4229197FADA200CF68D6 /* AnswerViewController.m */; };
+		8E1D422D197FB60500CF68D6 /* LoginRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E1D422C197FB60500CF68D6 /* LoginRegisterViewController.m */; };
+		8E1D4230197FEB1B00CF68D6 /* MyAnswersTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E1D422F197FEB1B00CF68D6 /* MyAnswersTableViewController.m */; };
+		8E73775F19BDC7F2003A3541 /* icon-query.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E73775C19BDC7F2003A3541 /* icon-query.png */; };
+		8E73776019BDC7F2003A3541 /* icon-question-sign.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E73775D19BDC7F2003A3541 /* icon-question-sign.png */; };
+		8E73776119BDC7F2003A3541 /* icon-user.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E73775E19BDC7F2003A3541 /* icon-user.png */; };
+		8E99AC7319A1DB7600C06C17 /* TabsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E99AC7219A1DB7600C06C17 /* TabsController.m */; };
+		8E99AC7619A30A2400C06C17 /* MyQuestionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E99AC7519A30A2400C06C17 /* MyQuestionsTableViewController.m */; };
+		8E99AC7C19A379F700C06C17 /* SingleQuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E99AC7B19A379F700C06C17 /* SingleQuestionViewController.m */; };
+		8E99AC7F19A4839D00C06C17 /* Star_gold@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E99AC7D19A4839D00C06C17 /* Star_gold@2x.png */; };
+		8E99AC8019A4839D00C06C17 /* Star_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E99AC7E19A4839D00C06C17 /* Star_gray@2x.png */; };
+		8E99AC8319A484B500C06C17 /* SingleAnswerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E99AC8219A484B500C06C17 /* SingleAnswerViewController.m */; };
+		8E99AC8619A4893500C06C17 /* ReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E99AC8519A4893500C06C17 /* ReportViewController.m */; };
+		8EA189CD199B3F600014F29C /* QuestionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EA189CC199B3F600014F29C /* QuestionsTableViewController.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0342C8E29C944E66B09E70E5 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		84460320AC474CA5AB5353A0 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E1D41EA197EECCC00CF68D6 /* askapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = askapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E1D41ED197EECCC00CF68D6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		8E1D41EF197EECCC00CF68D6 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		8E1D41F1197EECCC00CF68D6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		8E1D41F5197EECCC00CF68D6 /* AskApp-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AskApp-Info.plist"; sourceTree = "<group>"; };
+		8E1D41F7197EECCC00CF68D6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		8E1D41F9197EECCC00CF68D6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		8E1D41FB197EECCC00CF68D6 /* AskApp-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AskApp-Prefix.pch"; sourceTree = "<group>"; };
+		8E1D41FC197EECCC00CF68D6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		8E1D41FD197EECCC00CF68D6 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		8E1D4200197EECCC00CF68D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
+		8E1D4205197EECCC00CF68D6 /* HomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		8E1D4206197EECCC00CF68D6 /* HomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
+		8E1D4208197EECCC00CF68D6 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		8E1D420F197EECCC00CF68D6 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		8E1D4225197FAD9200CF68D6 /* AskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AskViewController.h; sourceTree = "<group>"; };
+		8E1D4226197FAD9200CF68D6 /* AskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AskViewController.m; sourceTree = "<group>"; };
+		8E1D4228197FADA200CF68D6 /* AnswerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnswerViewController.h; sourceTree = "<group>"; };
+		8E1D4229197FADA200CF68D6 /* AnswerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnswerViewController.m; sourceTree = "<group>"; };
+		8E1D422B197FB60500CF68D6 /* LoginRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginRegisterViewController.h; sourceTree = "<group>"; };
+		8E1D422C197FB60500CF68D6 /* LoginRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginRegisterViewController.m; sourceTree = "<group>"; };
+		8E1D422E197FEB1B00CF68D6 /* MyAnswersTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAnswersTableViewController.h; sourceTree = "<group>"; };
+		8E1D422F197FEB1B00CF68D6 /* MyAnswersTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAnswersTableViewController.m; sourceTree = "<group>"; };
+		8E73775C19BDC7F2003A3541 /* icon-query.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-query.png"; sourceTree = "<group>"; };
+		8E73775D19BDC7F2003A3541 /* icon-question-sign.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-question-sign.png"; sourceTree = "<group>"; };
+		8E73775E19BDC7F2003A3541 /* icon-user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-user.png"; sourceTree = "<group>"; };
+		8E99AC7119A1DB7600C06C17 /* TabsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabsController.h; sourceTree = "<group>"; };
+		8E99AC7219A1DB7600C06C17 /* TabsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabsController.m; sourceTree = "<group>"; };
+		8E99AC7419A30A2400C06C17 /* MyQuestionsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyQuestionsTableViewController.h; sourceTree = "<group>"; };
+		8E99AC7519A30A2400C06C17 /* MyQuestionsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyQuestionsTableViewController.m; sourceTree = "<group>"; };
+		8E99AC7A19A379F700C06C17 /* SingleQuestionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingleQuestionViewController.h; sourceTree = "<group>"; };
+		8E99AC7B19A379F700C06C17 /* SingleQuestionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingleQuestionViewController.m; sourceTree = "<group>"; };
+		8E99AC7D19A4839D00C06C17 /* Star_gold@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Star_gold@2x.png"; sourceTree = "<group>"; };
+		8E99AC7E19A4839D00C06C17 /* Star_gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Star_gray@2x.png"; sourceTree = "<group>"; };
+		8E99AC8119A484B500C06C17 /* SingleAnswerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingleAnswerViewController.h; sourceTree = "<group>"; };
+		8E99AC8219A484B500C06C17 /* SingleAnswerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingleAnswerViewController.m; sourceTree = "<group>"; };
+		8E99AC8419A4893500C06C17 /* ReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportViewController.h; sourceTree = "<group>"; };
+		8E99AC8519A4893500C06C17 /* ReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportViewController.m; sourceTree = "<group>"; };
+		8EA189CB199B3F600014F29C /* QuestionsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestionsTableViewController.h; sourceTree = "<group>"; };
+		8EA189CC199B3F600014F29C /* QuestionsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuestionsTableViewController.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8E1D41E7197EECCC00CF68D6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8E1D41F0197EECCC00CF68D6 /* CoreGraphics.framework in Frameworks */,
+				8E1D41F2197EECCC00CF68D6 /* UIKit.framework in Frameworks */,
+				8E1D41EE197EECCC00CF68D6 /* Foundation.framework in Frameworks */,
+				2486F5AA10A64E47A60DBC8B /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8E1D41E1197EECCC00CF68D6 = {
+			isa = PBXGroup;
+			children = (
+				8E1D41F3197EECCC00CF68D6 /* AskApp */,
+				8E1D41EC197EECCC00CF68D6 /* Frameworks */,
+				8E1D41EB197EECCC00CF68D6 /* Products */,
+				0342C8E29C944E66B09E70E5 /* Pods.xcconfig */,
+			);
+			sourceTree = "<group>";
+		};
+		8E1D41EB197EECCC00CF68D6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8E1D41EA197EECCC00CF68D6 /* askapp.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8E1D41EC197EECCC00CF68D6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8E1D41ED197EECCC00CF68D6 /* Foundation.framework */,
+				8E1D41EF197EECCC00CF68D6 /* CoreGraphics.framework */,
+				8E1D41F1197EECCC00CF68D6 /* UIKit.framework */,
+				8E1D420F197EECCC00CF68D6 /* XCTest.framework */,
+				84460320AC474CA5AB5353A0 /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8E1D41F3197EECCC00CF68D6 /* AskApp */ = {
+			isa = PBXGroup;
+			children = (
+				8E1D41FC197EECCC00CF68D6 /* AppDelegate.h */,
+				8E1D41FD197EECCC00CF68D6 /* AppDelegate.m */,
+				8E1D41FF197EECCC00CF68D6 /* Main_iPhone.storyboard */,
+				8E99AC7119A1DB7600C06C17 /* TabsController.h */,
+				8E99AC7219A1DB7600C06C17 /* TabsController.m */,
+				8E99AC8419A4893500C06C17 /* ReportViewController.h */,
+				8E99AC8519A4893500C06C17 /* ReportViewController.m */,
+				8EA189CB199B3F600014F29C /* QuestionsTableViewController.h */,
+				8EA189CC199B3F600014F29C /* QuestionsTableViewController.m */,
+				8E1D422E197FEB1B00CF68D6 /* MyAnswersTableViewController.h */,
+				8E1D422F197FEB1B00CF68D6 /* MyAnswersTableViewController.m */,
+				8E99AC7419A30A2400C06C17 /* MyQuestionsTableViewController.h */,
+				8E99AC7519A30A2400C06C17 /* MyQuestionsTableViewController.m */,
+				8E99AC7A19A379F700C06C17 /* SingleQuestionViewController.h */,
+				8E99AC7B19A379F700C06C17 /* SingleQuestionViewController.m */,
+				8E99AC8119A484B500C06C17 /* SingleAnswerViewController.h */,
+				8E99AC8219A484B500C06C17 /* SingleAnswerViewController.m */,
+				8E1D422B197FB60500CF68D6 /* LoginRegisterViewController.h */,
+				8E1D422C197FB60500CF68D6 /* LoginRegisterViewController.m */,
+				8E1D4225197FAD9200CF68D6 /* AskViewController.h */,
+				8E1D4226197FAD9200CF68D6 /* AskViewController.m */,
+				8E1D4228197FADA200CF68D6 /* AnswerViewController.h */,
+				8E1D4229197FADA200CF68D6 /* AnswerViewController.m */,
+				8E1D4205197EECCC00CF68D6 /* HomeViewController.h */,
+				8E1D4206197EECCC00CF68D6 /* HomeViewController.m */,
+				8E1D4208197EECCC00CF68D6 /* Images.xcassets */,
+				8E1D41F4197EECCC00CF68D6 /* Supporting Files */,
+			);
+			path = AskApp;
+			sourceTree = "<group>";
+		};
+		8E1D41F4197EECCC00CF68D6 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8E73775C19BDC7F2003A3541 /* icon-query.png */,
+				8E73775D19BDC7F2003A3541 /* icon-question-sign.png */,
+				8E73775E19BDC7F2003A3541 /* icon-user.png */,
+				8E99AC7D19A4839D00C06C17 /* Star_gold@2x.png */,
+				8E99AC7E19A4839D00C06C17 /* Star_gray@2x.png */,
+				8E1D41F5197EECCC00CF68D6 /* AskApp-Info.plist */,
+				8E1D41F6197EECCC00CF68D6 /* InfoPlist.strings */,
+				8E1D41F9197EECCC00CF68D6 /* main.m */,
+				8E1D41FB197EECCC00CF68D6 /* AskApp-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8E1D41E9197EECCC00CF68D6 /* AskApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8E1D421F197EECCC00CF68D6 /* Build configuration list for PBXNativeTarget "AskApp" */;
+			buildPhases = (
+				5C1EEC9AD95B40509E39DA06 /* Check Pods Manifest.lock */,
+				8E1D41E6197EECCC00CF68D6 /* Sources */,
+				8E1D41E7197EECCC00CF68D6 /* Frameworks */,
+				8E1D41E8197EECCC00CF68D6 /* Resources */,
+				3EB7301EFF0246FBA71C8107 /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AskApp;
+			productName = AskApp;
+			productReference = 8E1D41EA197EECCC00CF68D6 /* askapp.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8E1D41E2197EECCC00CF68D6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				TargetAttributes = {
+					8E1D41E9197EECCC00CF68D6 = {
+						DevelopmentTeam = 5V3DHE7RC5;
+					};
+				};
+			};
+			buildConfigurationList = 8E1D41E5197EECCC00CF68D6 /* Build configuration list for PBXProject "AskApp" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8E1D41E1197EECCC00CF68D6;
+			productRefGroup = 8E1D41EB197EECCC00CF68D6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8E1D41E9197EECCC00CF68D6 /* AskApp */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8E1D41E8197EECCC00CF68D6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8E99AC7F19A4839D00C06C17 /* Star_gold@2x.png in Resources */,
+				8E1D4209197EECCC00CF68D6 /* Images.xcassets in Resources */,
+				8E99AC8019A4839D00C06C17 /* Star_gray@2x.png in Resources */,
+				8E1D4201197EECCC00CF68D6 /* Main_iPhone.storyboard in Resources */,
+				8E73776019BDC7F2003A3541 /* icon-question-sign.png in Resources */,
+				8E73776119BDC7F2003A3541 /* icon-user.png in Resources */,
+				8E1D41F8197EECCC00CF68D6 /* InfoPlist.strings in Resources */,
+				8E73775F19BDC7F2003A3541 /* icon-query.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3EB7301EFF0246FBA71C8107 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5C1EEC9AD95B40509E39DA06 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8E1D41E6197EECCC00CF68D6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8E1D4227197FAD9200CF68D6 /* AskViewController.m in Sources */,
+				8E1D422A197FADA200CF68D6 /* AnswerViewController.m in Sources */,
+				8E1D4207197EECCC00CF68D6 /* HomeViewController.m in Sources */,
+				8E99AC7319A1DB7600C06C17 /* TabsController.m in Sources */,
+				8E99AC8319A484B500C06C17 /* SingleAnswerViewController.m in Sources */,
+				8EA189CD199B3F600014F29C /* QuestionsTableViewController.m in Sources */,
+				8E1D41FE197EECCC00CF68D6 /* AppDelegate.m in Sources */,
+				8E99AC7619A30A2400C06C17 /* MyQuestionsTableViewController.m in Sources */,
+				8E99AC8619A4893500C06C17 /* ReportViewController.m in Sources */,
+				8E1D41FA197EECCC00CF68D6 /* main.m in Sources */,
+				8E1D4230197FEB1B00CF68D6 /* MyAnswersTableViewController.m in Sources */,
+				8E99AC7C19A379F700C06C17 /* SingleQuestionViewController.m in Sources */,
+				8E1D422D197FB60500CF68D6 /* LoginRegisterViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		8E1D41F6197EECCC00CF68D6 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8E1D41F7197EECCC00CF68D6 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		8E1D41FF197EECCC00CF68D6 /* Main_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8E1D4200197EECCC00CF68D6 /* Base */,
+			);
+			name = Main_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		8E1D421D197EECCC00CF68D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8E1D421E197EECCC00CF68D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8E1D4220197EECCC00CF68D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0342C8E29C944E66B09E70E5 /* Pods.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Sergey EPIFANOV (2235WPP5FD)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "AskApp/AskApp-Prefix.pch";
+				INFOPLIST_FILE = "AskApp/AskApp-Info.plist";
+				PRODUCT_NAME = askapp;
+				PROVISIONING_PROFILE = "c277df3f-fea4-470a-8f78-765914f6ecd6";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		8E1D4221197EECCC00CF68D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0342C8E29C944E66B09E70E5 /* Pods.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Sergey EPIFANOV (2235WPP5FD)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "AskApp/AskApp-Prefix.pch";
+				INFOPLIST_FILE = "AskApp/AskApp-Info.plist";
+				PRODUCT_NAME = askapp;
+				PROVISIONING_PROFILE = "c277df3f-fea4-470a-8f78-765914f6ecd6";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8E1D41E5197EECCC00CF68D6 /* Build configuration list for PBXProject "AskApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8E1D421D197EECCC00CF68D6 /* Debug */,
+				8E1D421E197EECCC00CF68D6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8E1D421F197EECCC00CF68D6 /* Build configuration list for PBXNativeTarget "AskApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8E1D4220197EECCC00CF68D6 /* Debug */,
+				8E1D4221197EECCC00CF68D6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8E1D41E2197EECCC00CF68D6 /* Project object */;
+}
