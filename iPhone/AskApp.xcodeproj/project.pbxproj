@@ -24,6 +24,7 @@
 		8E73775F19BDC7F2003A3541 /* icon-query.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E73775C19BDC7F2003A3541 /* icon-query.png */; };
 		8E73776019BDC7F2003A3541 /* icon-question-sign.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E73775D19BDC7F2003A3541 /* icon-question-sign.png */; };
 		8E73776119BDC7F2003A3541 /* icon-user.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E73775E19BDC7F2003A3541 /* icon-user.png */; };
+		8E73776819C15F9A003A3541 /* QuestionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E73776719C15F9A003A3541 /* QuestionsViewController.m */; };
 		8E99AC7319A1DB7600C06C17 /* TabsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E99AC7219A1DB7600C06C17 /* TabsController.m */; };
 		8E99AC7619A30A2400C06C17 /* MyQuestionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E99AC7519A30A2400C06C17 /* MyQuestionsTableViewController.m */; };
 		8E99AC7C19A379F700C06C17 /* SingleQuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E99AC7B19A379F700C06C17 /* SingleQuestionViewController.m */; };
@@ -31,7 +32,6 @@
 		8E99AC8019A4839D00C06C17 /* Star_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E99AC7E19A4839D00C06C17 /* Star_gray@2x.png */; };
 		8E99AC8319A484B500C06C17 /* SingleAnswerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E99AC8219A484B500C06C17 /* SingleAnswerViewController.m */; };
 		8E99AC8619A4893500C06C17 /* ReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E99AC8519A4893500C06C17 /* ReportViewController.m */; };
-		8EA189CD199B3F600014F29C /* QuestionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EA189CC199B3F600014F29C /* QuestionsTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,6 +63,8 @@
 		8E73775C19BDC7F2003A3541 /* icon-query.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-query.png"; sourceTree = "<group>"; };
 		8E73775D19BDC7F2003A3541 /* icon-question-sign.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-question-sign.png"; sourceTree = "<group>"; };
 		8E73775E19BDC7F2003A3541 /* icon-user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-user.png"; sourceTree = "<group>"; };
+		8E73776619C15F9A003A3541 /* QuestionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestionsViewController.h; sourceTree = "<group>"; };
+		8E73776719C15F9A003A3541 /* QuestionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuestionsViewController.m; sourceTree = "<group>"; };
 		8E99AC7119A1DB7600C06C17 /* TabsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabsController.h; sourceTree = "<group>"; };
 		8E99AC7219A1DB7600C06C17 /* TabsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabsController.m; sourceTree = "<group>"; };
 		8E99AC7419A30A2400C06C17 /* MyQuestionsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyQuestionsTableViewController.h; sourceTree = "<group>"; };
@@ -75,8 +77,6 @@
 		8E99AC8219A484B500C06C17 /* SingleAnswerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingleAnswerViewController.m; sourceTree = "<group>"; };
 		8E99AC8419A4893500C06C17 /* ReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportViewController.h; sourceTree = "<group>"; };
 		8E99AC8519A4893500C06C17 /* ReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportViewController.m; sourceTree = "<group>"; };
-		8EA189CB199B3F600014F29C /* QuestionsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestionsTableViewController.h; sourceTree = "<group>"; };
-		8EA189CC199B3F600014F29C /* QuestionsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuestionsTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,8 +134,8 @@
 				8E99AC7219A1DB7600C06C17 /* TabsController.m */,
 				8E99AC8419A4893500C06C17 /* ReportViewController.h */,
 				8E99AC8519A4893500C06C17 /* ReportViewController.m */,
-				8EA189CB199B3F600014F29C /* QuestionsTableViewController.h */,
-				8EA189CC199B3F600014F29C /* QuestionsTableViewController.m */,
+				8E73776619C15F9A003A3541 /* QuestionsViewController.h */,
+				8E73776719C15F9A003A3541 /* QuestionsViewController.m */,
 				8E1D422E197FEB1B00CF68D6 /* MyAnswersTableViewController.h */,
 				8E1D422F197FEB1B00CF68D6 /* MyAnswersTableViewController.m */,
 				8E99AC7419A30A2400C06C17 /* MyQuestionsTableViewController.h */,
@@ -285,10 +285,10 @@
 			files = (
 				8E1D4227197FAD9200CF68D6 /* AskViewController.m in Sources */,
 				8E1D422A197FADA200CF68D6 /* AnswerViewController.m in Sources */,
+				8E73776819C15F9A003A3541 /* QuestionsViewController.m in Sources */,
 				8E1D4207197EECCC00CF68D6 /* HomeViewController.m in Sources */,
 				8E99AC7319A1DB7600C06C17 /* TabsController.m in Sources */,
 				8E99AC8319A484B500C06C17 /* SingleAnswerViewController.m in Sources */,
-				8EA189CD199B3F600014F29C /* QuestionsTableViewController.m in Sources */,
 				8E1D41FE197EECCC00CF68D6 /* AppDelegate.m in Sources */,
 				8E99AC7619A30A2400C06C17 /* MyQuestionsTableViewController.m in Sources */,
 				8E99AC8619A4893500C06C17 /* ReportViewController.m in Sources */,
@@ -404,7 +404,7 @@
 				GCC_PREFIX_HEADER = "AskApp/AskApp-Prefix.pch";
 				INFOPLIST_FILE = "AskApp/AskApp-Info.plist";
 				PRODUCT_NAME = askapp;
-				PROVISIONING_PROFILE = "c277df3f-fea4-470a-8f78-765914f6ecd6";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -420,7 +420,7 @@
 				GCC_PREFIX_HEADER = "AskApp/AskApp-Prefix.pch";
 				INFOPLIST_FILE = "AskApp/AskApp-Info.plist";
 				PRODUCT_NAME = askapp;
-				PROVISIONING_PROFILE = "c277df3f-fea4-470a-8f78-765914f6ecd6";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -16,7 +16,7 @@ class Refused(ndb.Model): #questions that user don't want to answer
 
 class AssignedQuestion(ndb.Model):
    question   = ndb.KeyProperty(kind='Question', indexed=False)
-   assignedon = ndb.DateTimeProperty(auto_now_add=True, indexed=False)
+   status     = ndb.StringProperty(indexed=False)
 
 class Answer(ndb.Model):
    answer     = ndb.TextProperty(indexed=False)
@@ -33,6 +33,7 @@ class User(ndb.Model):
    password          = ndb.StringProperty(indexed=False)
    points            = ndb.IntegerProperty(indexed=False, default=0)
    assignedquestions = ndb.StructuredProperty(AssignedQuestion, repeated=True, indexed=False)
+   assignedon = ndb.DateTimeProperty(indexed=False)
    deviceidentifier  = ndb.StringProperty()
    devicetoken       = ndb.StringProperty(indexed=False)
 

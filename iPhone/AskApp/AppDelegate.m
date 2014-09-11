@@ -11,8 +11,8 @@
 #import "MyQuestionsTableViewController.h"
 #import "SingleQuestionViewController.h"
 #import "SingleAnswerViewController.h"
-#import "QuestionsTableViewController.h"
 #import "HomeViewController.h"
+#import "QuestionsViewController.h"
 
 @implementation AppDelegate
 
@@ -182,7 +182,7 @@
         return;
     UITabBarController *tb = (UITabBarController *)self.window.rootViewController;
     [((UINavigationController *)tb.viewControllers[0]) popToRootViewControllerAnimated:NO];
-    ((QuestionsTableViewController *)((UINavigationController *)tb.viewControllers[0]).viewControllers[0]).needReloadAfterLogin = YES;
+    ((QuestionsViewController *)((UINavigationController *)tb.viewControllers[0]).viewControllers[0]).needReloadAfterLogin = YES;
     [((UINavigationController *)tb.viewControllers[2]) popToRootViewControllerAnimated:NO];
     ((HomeViewController *)((UINavigationController *)tb.viewControllers[0]).viewControllers[0]).needReloadAfterLogin = YES;
     id presenter, vc = [tb.storyboard instantiateViewControllerWithIdentifier:@"Login"];
@@ -201,8 +201,8 @@
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        //_sharedClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:@"http://localhost:8080"]];
-        _sharedClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:@"http://aaask-app.appspot.com"]];
+        _sharedClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:@"http://localhost:8080"]];
+        //_sharedClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:@"http://aaask-app.appspot.com"]];
     });
     
     return _sharedClient;

@@ -78,10 +78,12 @@ class BaseHandler(webapp2.RequestHandler):
       self.response.write(result)
       #return result
 
-   def get_new_question(self, old_questions):
+   def get_new_questions(self):
       query = Question.query()
       query = query.order(Question.queue).order(Question.numassigns).order(Question.askedon)
+      new_questions = []
       for question in query.iter():
+         found = False
          if hasattr(self, 'user'):
             if question.askedby == self.user.key:
                #logging.info('{0} is own'.format(question.key.id()))
@@ -89,19 +91,26 @@ class BaseHandler(webapp2.RequestHandler):
             elif Refused.query(Refused.refusedby == self.user.key, Refused.question == question.key).count() > 0:
                logging.info('{0} is refused'.format(question.key.id()))
                continue
-         found = False
-         for q in old_questions:
-            if q.question == question.key:
-               logging.info('{0} already assigned'.format(question.key.id()))
-               found = True
-               break
+            for q in self.user.assignedquestions:
+               if q.question == question.key:
+                  logging.info('{0} already assigned'.format(question.key.id()))
+                  found = True
+                  break
          if not found:
             logging.info('assigning {0}'.format(question.key.id()))
             question.numassigns += 1
             question.put()
-            return AssignedQuestion(question=question.key, assignedon=datetime.datetime.utcnow())
-      logging.info('no more questions')
-      return None
+            new_questions += [AssignedQuestion(question=question.key, status='new')]
+         if len(new_questions) >= QUESTIONS_NUMBER:
+            break
+      if len(new_questions) < QUESTIONS_NUMBER:
+         logging.error('no more questions')
+      if hasattr(self, 'user'):
+         self.user.assignedquestions = new_questions
+         self.user.assignedon = datetime.datetime.utcnow()
+         self.user.put()
+      else:
+         return new_questions
 
    def extract_assigned_questions(self):
       questions = []
@@ -114,42 +123,39 @@ class BaseHandler(webapp2.RequestHandler):
          for aq in self.user.assignedquestions:
             if aq.question == q.key:
                assignedquestion = aq
-         q = {'id': q.key.id(), 'question': q.question, 'assignedon': assignedquestion.assignedon.strftime('%Y-%m-%d %H:%M:%S')}
+         q = {'id': q.key.id(), 'question': q.question, 'status': assignedquestion.status}
          self.user._questions += [q]
 
    def refresh_questions(self):
-      modified = False
-      for assignedquestion in self.user.assignedquestions:
-         if not assignedquestion:
-            self.user.assignedquestions.remove(assignedquestion)
-            modified = True
-
-      for assignedquestion in self.user.assignedquestions:
-         if datetime.datetime.utcnow() - assignedquestion.assignedon > datetime.timedelta(hours=1):
-            new_question = self.get_new_question(self.user.assignedquestions)
-            self.user.assignedquestions.remove(assignedquestion)
-            self.user.assignedquestions += [new_question]
-            old_question = assignedquestion.question.get()
+      logging.info('Enter refresh')
+      if datetime.datetime.utcnow() - self.user.assignedon > datetime.timedelta(hours=1):
+         for aq in self.user.assignedquestions:
+            old_question = aq.question.get()
             if old_question:
                old_question.numassigns -= 1
                old_question.put()
-            modified = True
-         else:
-            logging.info('{0} asgndon {1}, now {2}'.format(assignedquestion.question.id(), assignedquestion.assignedon, datetime.datetime.utcnow()))
-
-      n = len(self.user.assignedquestions)
-      while n < QUESTIONS_NUMBER:
-         new_question = self.get_new_question(self.user.assignedquestions)
-         self.user.assignedquestions = self.user.assignedquestions + [new_question]
-         n += 1
-         modified = True
-      if modified: self.user.put()
+         self.get_new_questions()
+      else:
+         logging.info('Refresh: assigned on {0}, now {1}'.format(self.user.assignedon, datetime.datetime.utcnow()))
 
    def construct_user_profile(self):
-      return {'email':self.user.key.id(), 'nickname': self.user.nickname, 'questions': self.user._questions, 'points': self.user.points}
+      return {'email':self.user.key.id(), 'nickname': self.user.nickname, 'questions': self.user._questions,
+              'assignedon': self.user.assignedon.strftime('%y-%m-%d %H:%M:%S'),'points': self.user.points}
 
    def output_user_profile(self):
+      self.extract_assigned_questions()
       self.output(self.construct_user_profile())
+
+   def update_assigned_questions(self):
+      num_unanswered = 0
+      for aq in self.user.assignedquestions:
+         if aq.status == 'new':
+            num_unanswered += 1
+      if num_unanswered == 0:
+         self.get_new_questions()
+      else:
+         self.user.put()
+
 
 class Register(BaseHandler):
    def get(self):
@@ -204,14 +210,10 @@ class Register(BaseHandler):
       user.deviceidentifier = deviceIdentifier
       user.devicetoken = deviceToken
       user.points = INITIAL_POINTS
-      user.assignedquestions = []
-      for i in range(0, 3):
-         user.assignedquestions += [self.get_new_question(user.assignedquestions)]
+      user.assignedquestions = self.get_new_questions()
       user.put()
 
       self.user = user
-      self.extract_assigned_questions()
-      del self.user.assignedquestions
       self.output_user_profile()
 
 
@@ -250,8 +252,6 @@ class Login(BaseHandler):
       self.session['email'] = user.key.id()
       self.user = user
       self.refresh_questions()
-      self.extract_assigned_questions()
-      del self.user.assignedquestions
       self.output_user_profile()
 
    def get(self):
@@ -285,8 +285,6 @@ class RegisterDeviceToken(BaseHandler):
 class Profile(BaseHandler):
    @authorized
    def get(self):
-      self.extract_assigned_questions()
-      del self.user.assignedquestions
       self.output_user_profile()
 
    @authorized
@@ -313,8 +311,6 @@ class RefreshQuestions(BaseHandler):
    @authorized
    def get(self):
       self.refresh_questions()
-      self.extract_assigned_questions()
-      del self.user.assignedquestions
       self.output_user_profile()
 
 
@@ -382,11 +378,11 @@ class MakeAnswer(BaseHandler):
       question.lastanswer = answer.answeredon
       question.put()
 
-      new_question = self.get_new_question(self.user.assignedquestions)
-      self.user.assignedquestions.remove(assignedquestion)
-      self.user.assignedquestions += [new_question]
       self.user.points += POINTS_FOR_ANSWER
-      self.user.put()
+
+      i = self.user.assignedquestions.index(assignedquestion)
+      self.user.assignedquestions[i].status = 'answered'
+      self.update_assigned_questions()
 
       if question.askedby:
          asker = question.askedby.get()
@@ -401,8 +397,6 @@ class MakeAnswer(BaseHandler):
          #asker.hasnewanswer = 1
          #asker.put()
 
-      self.extract_assigned_questions()
-      del self.user.assignedquestions
       self.output_user_profile()
 
 
@@ -414,35 +408,37 @@ class RefuseQuestion(BaseHandler):
          if not form:
             form = self.request.body
          form = json.loads(form)
-         question_number = form['question']
-         question_number = int(question_number) #question is a position inside self.user.assignedquestions
+         question = ndb.Key('Question', form['question'])
       except:
          self.error('Wrong data')
          return
-      if question_number < 0 or question_number > len(self.user.assignedquestions):
-         self.error('Wrong data')
+      if not question:
+         self.error('Question {0} not found'.format(form['question']))
          return
 
-      assignedquestion = self.user.assignedquestions[question_number]
+      assignedquestion = None
+      for aq in self.user.assignedquestions:
+         if aq.question == question:
+            assignedquestion = aq
+      if not assignedquestion:
+         self.error('This question is no more assigned to you')
+         return
 
       refused = Refused()
       refused.refusedby = self.user.key
-      refused.question = assignedquestion.question
+      refused.question = question
       if 'reason' in form.keys():
          refused.reason = form['reason']
       refused.put()
 
-      question = assignedquestion.question.get()
+      question = question.get()
       question.numassigns -= 1
       question.put()
 
-      new_question = self.get_new_question(self.user.assignedquestions)
-      self.user.assignedquestions.remove(assignedquestion)
-      self.user.assignedquestions += [new_question]
-      self.user.put()
+      i = self.user.assignedquestions.index(assignedquestion)
+      self.user.assignedquestions[i].status = 'refused'
+      self.update_assigned_questions()
 
-      self.extract_assigned_questions()
-      del self.user.assignedquestions
       self.output_user_profile()
 
 
@@ -566,7 +562,6 @@ class SingleAnswer(BaseHandler):
       if not self.session.get('email'):
          self.session['email'] = self.user.key.id()
       self.extract_assigned_questions()
-      del self.user.assignedquestions
       output = {
          'profile': self.construct_user_profile(),
          'question': {'id': question.key.id(),
