@@ -43,3 +43,25 @@ c:\users\sergey epifanov\documents\visual studio 2013\Samples\JSON Parsing Sampl
 c:\users\sergey epifanov\documents\visual studio 2013\Samples\JSON Parsing Sample1\JsonSample\obj\Debug\JsonSample.dll
 c:\users\sergey epifanov\documents\visual studio 2013\Samples\JSON Parsing Sample1\JsonSample\obj\Debug\JsonSample.pdb
 c:\users\sergey epifanov\documents\visual studio 2013\Samples\JSON Parsing Sample1\JsonSample\obj\Debug\XapCacheFile.xml
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\JS\JsonSample\obj\Debug\JsonSample.csprojResolveAssemblyReference.cache
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\JS\JsonSample\obj\Debug\App.g.cs
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\JS\JsonSample\obj\Debug\MainPage.g.cs
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\JS\JsonSample\obj\Debug\JsonSample.g.resources
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\JS\JsonSample\obj\Debug\JsonSample.Resources.AppResources.resources
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\JS\JsonSample\obj\Debug\JsonSample.csproj.GenerateResource.Cache
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\JS\JsonSample\obj\Debug\JsonSample.dll
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\JS\JsonSample\Bin\Debug\Assets\ApplicationIcon.png
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\JS\JsonSample\Bin\Debug\Assets\Tiles\FlipCycleTileLarge.png
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\JS\JsonSample\Bin\Debug\Assets\Tiles\FlipCycleTileMedium.png
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\JS\JsonSample\Bin\Debug\Assets\Tiles\FlipCycleTileSmall.png
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\JS\JsonSample\Bin\Debug\Assets\Tiles\IconicTileMediumLarge.png
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\JS\JsonSample\Bin\Debug\Assets\Tiles\IconicTileSmall.png
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\JS\JsonSample\Bin\Debug\JsonSample.dll
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\JS\JsonSample\Bin\Debug\JsonSample.pdb
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\JS\JsonSample\Bin\Debug\AppManifest.xaml
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\JS\JsonSample\Bin\Debug\Properties\WMAppManifest.xml
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\JS\JsonSample\Bin\Debug\JsonSample_Debug_AnyCPU.xap
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\JS\JsonSample\Bin\Debug\Newtonsoft.Json.WindowsPhone.pdb
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\JS\JsonSample\Bin\Debug\Newtonsoft.Json.WindowsPhone.xml
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\JS\JsonSample\obj\Debug\JsonSample.pdb
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\JS\JsonSample\obj\Debug\XapCacheFile.xml

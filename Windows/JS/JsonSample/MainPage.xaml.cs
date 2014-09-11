@@ -109,7 +109,7 @@ namespace JsonSample
                     {
                         //tbl_result.Text = result;
                         var rootObject = JsonConvert.DeserializeObject<RootObject>(result);
-                        tbl_result.Text = rootObject.ToString();
+                        tbl_result.Text = result;
                     });
                     
                 }
