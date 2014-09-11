@@ -20,6 +20,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
+
 using Newtonsoft.Json;
 using System.Text;
 using System.IO;
@@ -219,7 +220,7 @@ namespace AskApp
 
                     // Add the post data to the web request
                     postStream.Write(byteArray, 0, byteArray.Length);
-                    postStream.Close();
+                    postStream.Dispose();
 
                     // Start the web request
                     myRequest.BeginGetResponse(new AsyncCallback(GetResponsetStreamCallback), myRequest);

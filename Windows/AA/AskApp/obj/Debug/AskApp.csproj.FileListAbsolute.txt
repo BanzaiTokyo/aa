@@ -39,3 +39,20 @@ c:\users\sergey epifanov\documents\visual studio 2013\Projects\AskApp\AskApp\obj
 c:\users\sergey epifanov\documents\visual studio 2013\Projects\AskApp\AskApp\obj\Debug\qualifiers.txt.intermediate
 c:\users\sergey epifanov\documents\visual studio 2013\Projects\AskApp\AskApp\obj\Debug\MultipleQualifiersPerDimensionFound.txt
 c:\users\sergey epifanov\documents\visual studio 2013\Projects\AskApp\AskApp\obj\Debug\ProjectArchitectures.txt
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\AA\AskApp\obj\Debug\AskApp.csprojResolveAssemblyReference.cache
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\AA\AskApp\obj\Debug\App.g.i.cs
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\AA\AskApp\obj\Debug\App.g.cs
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\AA\AskApp\obj\Debug\ItemPage.g.i.cs
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\AA\AskApp\obj\Debug\ItemPage.g.cs
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\AA\AskApp\obj\Debug\PivotPage.g.i.cs
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\AA\AskApp\obj\Debug\PivotPage.g.cs
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\AA\AskApp\obj\Debug\XamlTypeInfo.g.cs
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\AA\AskApp\obj\Debug\App.xaml
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\AA\AskApp\obj\Debug\ItemPage.xaml
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\AA\AskApp\obj\Debug\App.xbf
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\AA\AskApp\obj\Debug\ItemPage.xbf
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\AA\AskApp\obj\Debug\XamlSaveStateFile.xml
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\AA\AskApp\obj\Debug\AskApp.exe
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\AA\AskApp\obj\Debug\AskApp.pdb
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\AA\AskApp\obj\Debug\PivotPage.xaml
+C:\Users\Sergey Epifanov\Documents\GitHub\aa\Windows\AA\AskApp\obj\Debug\PivotPage.xbf
