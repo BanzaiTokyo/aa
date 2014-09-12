@@ -15,6 +15,5 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnReport;
 @property (weak, nonatomic) IBOutlet UIButton *btnRemove;
 @property (weak, nonatomic) IBOutlet UIProgressView *pgsTime;
-@property (nonatomic) BOOL needReloadAfterLogin;
 - (void)showQuestion;
 @end

@@ -182,9 +182,7 @@
         return;
     UITabBarController *tb = (UITabBarController *)self.window.rootViewController;
     [((UINavigationController *)tb.viewControllers[0]) popToRootViewControllerAnimated:NO];
-    ((QuestionsViewController *)((UINavigationController *)tb.viewControllers[0]).viewControllers[0]).needReloadAfterLogin = YES;
     [((UINavigationController *)tb.viewControllers[2]) popToRootViewControllerAnimated:NO];
-    ((HomeViewController *)((UINavigationController *)tb.viewControllers[0]).viewControllers[0]).needReloadAfterLogin = YES;
     id presenter, vc = [tb.storyboard instantiateViewControllerWithIdentifier:@"Login"];
     if ([tb.selectedViewController isKindOfClass:[UINavigationController class]])
         presenter = ((UINavigationController *)tb.selectedViewController).viewControllers[0];
@@ -201,8 +199,8 @@
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _sharedClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:@"http://localhost:8080"]];
-        //_sharedClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:@"http://aaask-app.appspot.com"]];
+        //_sharedClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:@"http://localhost:8080"]];
+        _sharedClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:@"http://aaask-app.appspot.com"]];
     });
     
     return _sharedClient;
@@ -246,5 +244,18 @@
 }
 - (NSInteger)count {
     return 0;
+}
+@end
+
+@implementation NSDate (BanzaiTokyo)
+-(NSDate *) toLocalTime {
+    NSTimeZone *tz = [NSTimeZone localTimeZone];
+    NSInteger seconds = [tz secondsFromGMTForDate: self];
+    return [NSDate dateWithTimeInterval: seconds sinceDate: self];
+}
+-(NSDate *) toGlobalTime {
+    NSTimeZone *tz = [NSTimeZone localTimeZone];
+    NSInteger seconds = -[tz secondsFromGMTForDate: self];
+    return [NSDate dateWithTimeInterval: seconds sinceDate: self];
 }
 @end

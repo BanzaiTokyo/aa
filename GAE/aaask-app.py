@@ -58,11 +58,6 @@ class BaseHandler(webapp2.RequestHandler):
                      subject='Error in the app',
                      body=str(exception) + '\n' + trace)
 
-      """if isinstance(exception, webapp2.HTTPException):
-         self.response.set_status(exception.code)
-      else:
-         self.response.set_status(500)"""
-
    def error(self, msg):
       if msg == 403:
          super(BaseHandler, self).error(403)
@@ -86,7 +81,7 @@ class BaseHandler(webapp2.RequestHandler):
          found = False
          if hasattr(self, 'user'):
             if question.askedby == self.user.key:
-               #logging.info('{0} is own'.format(question.key.id()))
+               logging.info('{0} is own'.format(question.key.id()))
                continue
             elif Refused.query(Refused.refusedby == self.user.key, Refused.question == question.key).count() > 0:
                logging.info('{0} is refused'.format(question.key.id()))
@@ -140,7 +135,7 @@ class BaseHandler(webapp2.RequestHandler):
 
    def construct_user_profile(self):
       return {'email':self.user.key.id(), 'nickname': self.user.nickname, 'questions': self.user._questions,
-              'assignedon': self.user.assignedon.strftime('%y-%m-%d %H:%M:%S'),'points': self.user.points}
+              'assignedon': self.user.assignedon.strftime('%Y-%m-%d %H:%M:%S'),'points': self.user.points}
 
    def output_user_profile(self):
       self.extract_assigned_questions()
@@ -490,7 +485,7 @@ class MyQuestions(BaseHandler):
       for question in questions:
          q = {'id': question.key.id(),
               'question': question.question,
-              'askedon': question.askedon.strftime('%y-%m-%d %H:%M:%S'),
+              'askedon': question.askedon.strftime('%Y-%m-%d %H:%M:%S'),
               'numanswers': question.numanswers}
          output.append(q)
 
@@ -514,7 +509,7 @@ class Answers(BaseHandler):
       for answer in answers:
          q = {'id': answer.key.id(),
               'answer': answer.answer,
-              'answeredon': answer.answeredon.strftime('%y-%m-%d %H:%M:%S'),
+              'answeredon': answer.answeredon.strftime('%Y-%m-%d %H:%M:%S'),
               'helpful': answer.helpful,
               'detailed': answer.detailed,
               'funny': answer.funny,
@@ -541,7 +536,7 @@ class MyAnswers(BaseHandler):
          q = {'id': answer.key.id(),
               'question': question.question,
               'answer': answer.answer,
-              'answeredon': answer.answeredon.strftime('%y-%m-%d %H:%M:%S')}
+              'answeredon': answer.answeredon.strftime('%Y-%m-%d %H:%M:%S')}
          output.append(q)
 
       self.output(output)
@@ -566,12 +561,12 @@ class SingleAnswer(BaseHandler):
          'profile': self.construct_user_profile(),
          'question': {'id': question.key.id(),
                       'question': question.question,
-                      'askedon': question.askedon.strftime('%y-%m-%d %H:%M:%S'),
+                      'askedon': question.askedon.strftime('%Y-%m-%d %H:%M:%S'),
                      },
          'answer': {'id': answer.key.id(),
                     'questionText': question.question,
                     'answer': answer.answer,
-                    'answeredon': answer.answeredon.strftime('%y-%m-%d %H:%M:%S'),
+                    'answeredon': answer.answeredon.strftime('%Y-%m-%d %H:%M:%S'),
                     'helpful': answer.helpful,
                     'detailed': answer.detailed,
                     'funny': answer.funny,
@@ -692,18 +687,13 @@ class TestPush(webapp2.RequestHandler):
             break
       self.response.write('OK')
 
-class FillAnswerTime(webapp2.RequestHandler):
+class UpdateAssigned(webapp2.RequestHandler):
    def get(self):
-      query = Question.query()
-      for question in query.iter():
-         if not question.askedby:
-            continue
-         answers = Answer.query(Answer.question == question.key).order(-Answer.answeredon)
-         if answers.count() == 0:
-            continue
-         answer = answers.fetch(1)[0]
-         question.lastanswer = answer.answeredon
-         question.put()
+      email = self.request.get('email')
+      u = User.get_by_id(email)
+      u.assignedon = datetime.datetime.utcnow() - datetime.timedelta(minutes=int(self.request.get('minutes')))
+      u.put()
+      self.response.write(u.assignedon.strftime('%Y-%m-%d %H:%M:%S'))
       self.response.write('OK')
 
 config = {}
@@ -730,5 +720,5 @@ application = webapp2.WSGIApplication([
    ('/populatequestions', SystemQuestion),
    ('/configapn', ConfigureApp)
    ,('/testpush', TestPush)
-   ,('/filllastanswer', FillAnswerTime)
+   ,('/updateassigned', UpdateAssigned)
 ], config=config, debug=True)

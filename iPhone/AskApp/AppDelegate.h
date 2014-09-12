@@ -11,6 +11,7 @@
 
 #import <UIKit/UIKit.h>
 #import <AFNetworking/AFHTTPSessionManager.h>
+#import <SVProgressHUD.h>
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -40,4 +41,9 @@
 @interface NSNull (BanzaiTokyo)
 - (NSInteger)length;
 - (NSInteger)count;
+@end
+
+@interface NSDate (BanzaiTokyo)
+-(NSDate *) toLocalTime;
+-(NSDate *) toGlobalTime;
 @end

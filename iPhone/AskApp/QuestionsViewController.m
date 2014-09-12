@@ -18,42 +18,29 @@
     NSArray *refuseReasons;
     NSDateFormatter *dateFormatter;
     NSTimer *timer;
-    UIRefreshControl *refreshControl;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     refuseReasons = @[@"It's not in English", @"It's not a question", @"It's offensive", @"Not my expertise", @"Just remove it"];
     dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+    NSTimeZone *tz = [NSTimeZone timeZoneForSecondsFromGMT:0];
+    [dateFormatter setTimeZone:tz];
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
 
-    refreshControl = [[UIRefreshControl alloc] init];
-    [refreshControl addTarget:self action:@selector(reloadQuestions:) forControlEvents:UIControlEventValueChanged];
-    [self.scrollView addSubview:refreshControl];
     questionViews = [NSMutableArray new];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
     if (self.presentedViewController)
         return;
-    if (![AppDelegate sharedApp].profile) {
-        self.scrollView.contentOffset = CGPointMake(0, -64);
-        [refreshControl beginRefreshing];
+    if (![AppDelegate sharedApp].profile)
         [self reloadQuestions:nil];
-    }
-    else if (self.needReloadAfterLogin) {
-        [self showQuestion];
-        [self runTimer];
-    }
     else {
-        NSDate *d = [dateFormatter dateFromString: [AppDelegate sharedApp].profile[@"assignedon"]];
-        NSTimeInterval dt = [d timeIntervalSinceNow];
-        if (dt < -MAX_ANSWER_TIME) {
-            self.scrollView.contentOffset = CGPointMake(0, -64);
-            [refreshControl beginRefreshing];
-            [self reloadQuestions:refreshControl];
-        }
+        NSDate *dateAssigned = [dateFormatter dateFromString: [AppDelegate sharedApp].profile[@"assignedon"]];
+        NSTimeInterval dt = -[dateAssigned timeIntervalSinceNow];
+        if (dt > MAX_ANSWER_TIME)
+            [self reloadQuestions:self];
         else {
             if (!questionViews.count)
                 [self showQuestion];
@@ -74,7 +61,7 @@
 - (void)showQuestion {
     NSArray *questions = [AppDelegate sharedApp].profile[@"questions"];
     
-    self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width*questions.count, self.scrollView.bounds.size.height+1);
+    self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width*questions.count, self.scrollView.contentSize.height);
     self.pageControl.numberOfPages = questions.count;
     
     for (UIView *v in questionViews)
@@ -99,9 +86,7 @@
         [self.scrollView addSubview:questionView];
         [questionViews addObject:questionView];
     }
-    NSDate *d = [dateFormatter dateFromString: questions[0][@"assignedon"]];
-    NSTimeInterval dt = [d timeIntervalSinceNow];
-    self.pgsTime.progress = 1.0 - fabs(dt/MAX_ANSWER_TIME);
+    [self updateTimer:nil];
     [self scrollPage:self.pageControl];
 }
 
@@ -113,12 +98,12 @@
     else //called if profile is not loaded in HomeViewController
         url = @"/profile";
     HTTPClient *client = [HTTPClient sharedClient];
+    [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeGradient];
     [client GET:url parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        [refreshControl endRefreshing];
+        [SVProgressHUD dismiss];
         [self runTimer];
         if (responseObject[@"email"]) {
             [AppDelegate sharedApp].profile = [responseObject mutableCopy];
-            self.needReloadAfterLogin = NO;
             [self showQuestion];
         }
         else {
@@ -128,13 +113,15 @@
             [UIAlertView showAlertViewWithTitle:@"Error" message: errorMessage cancelButtonTitle:@"OK" otherButtonTitles:nil];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [refreshControl endRefreshing];
+        [SVProgressHUD dismiss];
         NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
         if (response.statusCode == 403)
             [[AppDelegate sharedApp] handle403];
         else {
             [self runTimer];
-            [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"HTTP error code %ld", (long)response.statusCode]];
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Network error" message:[NSString stringWithFormat:@"HTTP error code %ld", (long)response.statusCode] delegate:self cancelButtonTitle:@"Retry" otherButtonTitles: nil];
+            av.tag = 123;
+            [av show];
         }
     }];
 }
@@ -145,7 +132,12 @@
     CGFloat pageWidth = self.scrollView.frame.size.width;
     CGPoint pos = CGPointMake(self.pageControl.currentPage*pageWidth, self.scrollView.contentOffset.y);
     [self.scrollView scrollRectToVisible:CGRectMake(pos.x, pos.y, pageWidth, self.scrollView.frame.size.height) animated:YES];
-    BOOL unanswered = [[AppDelegate sharedApp].profile[@"questions"][sender.currentPage][@"status"] isEqualToString:@"new"];
+    
+    BOOL unanswered;
+    if (sender.currentPage < [[AppDelegate sharedApp].profile[@"questions"] count])
+        unanswered = [[AppDelegate sharedApp].profile[@"questions"][sender.currentPage][@"status"] isEqualToString:@"new"];
+    else
+        unanswered = NO;
     self.btnAnswer.enabled = unanswered;
     self.btnRemove.enabled = unanswered;
     self.btnReport.enabled = unanswered;
@@ -155,7 +147,12 @@
     CGFloat pageWidth = self.scrollView.frame.size.width;
     NSInteger page = (NSInteger)floor((self.scrollView.contentOffset.x * 2.0f + pageWidth) / (pageWidth * 2.0f));
     self.pageControl.currentPage = page;
-    BOOL unanswered = [[AppDelegate sharedApp].profile[@"questions"][page][@"status"] isEqualToString:@"new"];
+    
+    BOOL unanswered;
+    if (page < [[AppDelegate sharedApp].profile[@"questions"] count])
+        unanswered = [[AppDelegate sharedApp].profile[@"questions"][page][@"status"] isEqualToString:@"new"];
+    else
+        unanswered = NO;
     self.btnAnswer.enabled = unanswered;
     self.btnRemove.enabled = unanswered;
     self.btnReport.enabled = unanswered;
@@ -163,12 +160,11 @@
 
 #pragma mark - Actions
 -(void)updateTimer:(NSTimer *)timer {
-    self.pgsTime.progress = self.pgsTime.progress - 1.0/MAX_ANSWER_TIME;
-    if (self.pgsTime.progress < FLT_EPSILON) {
-        self.scrollView.contentOffset = CGPointMake(0, -64);
-        [refreshControl beginRefreshing];
+    NSDate *dateAssigned = [dateFormatter dateFromString: [AppDelegate sharedApp].profile[@"assignedon"]];
+    NSTimeInterval dt = -[dateAssigned timeIntervalSinceNow];
+    self.pgsTime.progress = 1.0 - fabs(dt/MAX_ANSWER_TIME);
+    if (dt > MAX_ANSWER_TIME)
         [self reloadQuestions:self];
-    }
 }
 
 - (IBAction)removeQuestion:(UIButton *)sender {
@@ -180,6 +176,8 @@
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (alertView.tag == 123)
+        [self reloadQuestions:self];
     if (!buttonIndex)
         return;
     [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeGradient];
