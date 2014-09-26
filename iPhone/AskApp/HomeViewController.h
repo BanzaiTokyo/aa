@@ -9,6 +9,4 @@
 #import <UIKit/UIKit.h>
 
 @interface HomeViewController : UIViewController
-@property (nonatomic) BOOL needReloadAfterLogin;
-
 @end

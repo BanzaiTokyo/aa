@@ -1,13 +1,10 @@
 //
 //  AppDelegate.h
-//  AskApp
+//  AskAppAdmin
 //
-//  Created by Toxa on 22/07/14.
+//  Created by Toxa on 18/09/14.
+//  Copyright (c) 2014 BanzaiTokyo. All rights reserved.
 //
-//
-
-#define MAX_ANSWER_TIME (60.0*60.0)
-#define POINTS_TO_ASK   3
 
 #import <UIKit/UIKit.h>
 #import <AFNetworking/AFHTTPSessionManager.h>
@@ -38,12 +35,6 @@
 + (void)showAlertViewWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSArray *)otherButtonTitles;
 @end
 
-@interface NSNull (BanzaiTokyo)
-- (NSInteger)length;
-- (NSInteger)count;
-@end
-
-@interface NSDate (BanzaiTokyo)
--(NSDate *) toLocalTime;
--(NSDate *) toGlobalTime;
+@interface NSString(BanzaiTokyo)
+-(NSString *)stringValue;
 @end

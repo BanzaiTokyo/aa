@@ -19,13 +19,8 @@ indexes:
 - kind: Answer
   properties:
   - name: question
+  - name: moderated
   - name: answeredon
-    direction: desc
-
-- kind: Question
-  properties:
-  - name: askedby
-  - name: askedon
     direction: desc
 
 - kind: Question
@@ -36,6 +31,14 @@ indexes:
 
 - kind: Question
   properties:
+  - name: askedby
+  - name: moderated
+  - name: askedon
+    direction: desc
+
+- kind: Question
+  properties:
+  - name: moderated
   - name: queue
   - name: numassigns
   - name: askedon

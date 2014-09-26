@@ -112,7 +112,6 @@
         cell.detailTextLabel.text = q[@"answeredon"];
         [AppDelegate adjustLabelHeight:cell.textLabel minHeight:20.0 forSize:self.view.frame.size];
         cell.textLabel.text = q[@"answer"];
-        [AppDelegate adjustLabelHeight:cell.detailTextLabel minHeight:20.0 forSize:self.view.frame.size];
     }
     else {
         cell.accessoryType = UITableViewCellAccessoryNone;

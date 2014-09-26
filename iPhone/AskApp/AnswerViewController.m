@@ -7,6 +7,7 @@
 //
 
 #import "AnswerViewController.h"
+#import "QuestionsViewController.h"
 
 @interface AnswerViewController () {
     NSDictionary *question;
@@ -54,8 +55,7 @@
             [AppDelegate sharedApp].profile = [responseObject mutableCopy];
         }
         [self.navigationController popViewControllerAnimated:YES];
-        [((UITableViewController *)self.navigationController.topViewController).tableView reloadData];
-        
+        [((QuestionsViewController *)self.navigationController.topViewController) showQuestion];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
         if (response.statusCode == 403) {
