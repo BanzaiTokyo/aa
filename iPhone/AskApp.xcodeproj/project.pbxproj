@@ -37,7 +37,7 @@
 /* Begin PBXFileReference section */
 		0342C8E29C944E66B09E70E5 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		84460320AC474CA5AB5353A0 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		8E1D41EA197EECCC00CF68D6 /* askapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = askapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E1D41EA197EECCC00CF68D6 /* AskApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AskApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E1D41ED197EECCC00CF68D6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8E1D41EF197EECCC00CF68D6 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8E1D41F1197EECCC00CF68D6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -107,7 +107,7 @@
 		8E1D41EB197EECCC00CF68D6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8E1D41EA197EECCC00CF68D6 /* askapp.app */,
+				8E1D41EA197EECCC00CF68D6 /* AskApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -193,7 +193,7 @@
 			);
 			name = AskApp;
 			productName = AskApp;
-			productReference = 8E1D41EA197EECCC00CF68D6 /* askapp.app */;
+			productReference = 8E1D41EA197EECCC00CF68D6 /* AskApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -403,7 +403,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AskApp/AskApp-Prefix.pch";
 				INFOPLIST_FILE = "AskApp/AskApp-Info.plist";
-				PRODUCT_NAME = askapp;
+				PRODUCT_NAME = AskApp;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -419,7 +419,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AskApp/AskApp-Prefix.pch";
 				INFOPLIST_FILE = "AskApp/AskApp-Info.plist";
-				PRODUCT_NAME = askapp;
+				PRODUCT_NAME = AskApp;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};

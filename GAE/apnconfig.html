@@ -3,6 +3,19 @@
         <title>Push Config</title>
     </head>
     <body>
+        <style type="text/css">
+            .halfwidth {
+                float: left;
+                min-width: 49%;
+                max-width: 550px;
+                margin: 0 10px 20px 0;
+            }
+            .halfwidth textarea {
+                width: 100%;
+                max-width: 550px;
+                height: 300px;
+            }
+        </style>
         <form method="POST">
         <h1>Push Config</h1>
         GCM API Key (Get from Google API Console)<br>
@@ -22,23 +35,40 @@
             <option value="False"{% if not appconfig.apns_test_mode %} SELECTED{% endif %}>Production Mode</option>
         </select><br>
         <br>
+
+        <div class="halfwidth">
+            APNS Sandbox Certificate (Generate .pem from .cer then put contents in this field)<br>
+            <textarea name="apns_sandbox_cert">{{appconfig.apns_sandbox_cert}}</textarea><br>
+        </div>
         
-        APNS Sandbox Certificate (Generate .pem from .cer then put contents in this field)<br>
-        <textarea name="apns_sandbox_cert" style="width:550px;height:300px;">{{appconfig.apns_sandbox_cert}}</textarea><br>
-        <br>
+        <div class="halfwidth">
+            APNS Sandbox Key (Generate .pem from .p12 then put contents in this field)<br>
+            <textarea name="apns_sandbox_key">{{appconfig.apns_sandbox_key}}</textarea><br>
+        </div>
+        <div style="clear: both"></div>
         
-        APNS Sandbox Key (Generate .pem from .cer then put contents in this field)<br>
-        <textarea name="apns_sandbox_key" style="width:550px;height:300px;">{{appconfig.apns_sandbox_key}}</textarea><br>
-        <br>
+        <div class="halfwidth">
+            APNS Certificate (Generate .pem from .cer then put contents in this field)<br>
+            <textarea name="apns_cert">{{appconfig.apns_cert}}</textarea><br>
+        </div>
         
-        APNS Certificate (Generate .pem from .cer then put contents in this field)<br>
-        <textarea name="apns_cert" style="width:550px;height:300px;">{{appconfig.apns_cert}}</textarea><br>
-        <br>
-        
-        APNS Key (Generate .pem from .cer then put contents in this field)<br>
-        <textarea name="apns_key" style="width:550px;height:300px;">{{appconfig.apns_key}}</textarea><br>
-        <br>
-        
+        <div class="halfwidth">
+            APNS Key (Generate .pem from .p12 then put contents in this field)<br>
+            <textarea name="apns_key">{{appconfig.apns_key}}</textarea><br>
+        </div>
+        <div style="clear: both"></div>
+
+        <div class="halfwidth">
+            APNS Admin App Certificate (Generate .pem from .cer then put contents in this field)<br>
+            <textarea name="apns_admin_cert">{{appconfig.apns_admin_cert}}</textarea><br>
+        </div>
+
+        <div class="halfwidth">
+            APNS Admin App Key (Generate .pem from .p12 then put contents in this field)<br>
+            <textarea name="apns_admin_key">{{appconfig.apns_admin_key}}</textarea><br>
+        </div>
+        <div style="clear: both"></div>
+
         <input type="submit" name="submit" value="Submit" />
         </form>
     </body>

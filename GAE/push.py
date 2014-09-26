@@ -52,16 +52,18 @@ def convertToApnsMessage(self, message):
     
     return apnsmessage
 
-def getAPNs():
+def getAPNs(admin_app):
     appconfig = ApnConfig.get_or_insert("config")
-    
-    if appconfig.apns_test_mode:
+
+    if admin_app:
+        return APNs(use_sandbox=True, cert_file=appconfig.apns_admin_cert, key_file=appconfig.apns_admin_key)
+    elif appconfig.apns_test_mode:
         return APNs(use_sandbox=True, cert_file=appconfig.apns_sandbox_cert, key_file=appconfig.apns_sandbox_key)
     else:
         return APNs(use_sandbox=False, cert_file=appconfig.apns_cert, key_file=appconfig.apns_key)
 
-def sendMulticastApnsMessage(self, apns_reg_ids, apnsmessage):
-    apns = getAPNs()
+def sendMulticastApnsMessage(self, apns_reg_ids, apnsmessage, admin_app):
+    apns = getAPNs(admin_app)
     
     # Send a notification
     payload = Payload(alert=apnsmessage["alert"], sound=apnsmessage["sound"], custom=apnsmessage["custom"], badge=apnsmessage["badge"])
@@ -73,7 +75,7 @@ def sendMulticastApnsMessage(self, apns_reg_ids, apnsmessage):
 
 def sendSingleApnsMessage(self, message, token):
     apns_reg_ids=[token]
-    sendMulticastApnsMessage(self, apns_reg_ids, message)
+    sendMulticastApnsMessage(self, apns_reg_ids, message, False)
 
 
 #Sample POST Data -->  platform=1&token=<device token string>&message={"request":{"data":{"custom": "json data"}, "ios_message":"This is a test","ios_button_text":"yeah!","ios_badge": -1, "ios_sound": "soundfile", "android_collapse_key": "collapsekey"}}
@@ -83,3 +85,8 @@ class SendPushMessage():
       message = {'request': {'data': {'custom': answerID}, 'ios_message': 'You have a new answer', 'ios_badge': 1}}
       message = convertToApnsMessage(self, message)
       sendSingleApnsMessage(self, message, token)
+
+   def post_for_admin(self, tokens, message):
+      message = {'request': {'data': {'custom': 0}, 'ios_message': message, 'ios_badge': 1}}
+      message = convertToApnsMessage(self, message)
+      sendMulticastApnsMessage(self, tokens, message, True)

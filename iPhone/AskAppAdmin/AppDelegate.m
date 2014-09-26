@@ -1,18 +1,13 @@
 //
 //  AppDelegate.m
-//  AskApp
+//  AskAppAdmin
 //
-//  Created by Toxa on 22/07/14.
-//
+//  Created by Toxa on 18/09/14.
+//  Copyright (c) 2014 BanzaiTokyo. All rights reserved.
 //
 
 #import "AppDelegate.h"
 #import <AFNetworking/AFNetworkActivityIndicatorManager.h>
-#import "MyQuestionsTableViewController.h"
-#import "SingleQuestionViewController.h"
-#import "SingleAnswerViewController.h"
-#import "HomeViewController.h"
-#import "QuestionsViewController.h"
 
 @implementation AppDelegate
 
@@ -28,14 +23,14 @@
     }
     self.deviceIdentifier = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
     NSDictionary *remotePayload = launchOptions[@"UIApplicationLaunchOptionsRemoteNotificationKey"];
-	if (remotePayload) {
+    if (remotePayload) {
         _handlingPushMessage = YES;
         [self handleRemoteNotification:remotePayload fromLaunch:YES];
     }
     else
         _handlingPushMessage = NO;
     
-   return YES;
+    return YES;
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -50,8 +45,9 @@
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
 
-- (void)applicationWillEnterForeground:(UIApplication *)application {
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+- (void)applicationWillEnterForeground:(UIApplication *)application
+{
+    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -66,98 +62,40 @@
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     self.deviceToken = [[[deviceToken description]
-                                    stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]]
-                                   stringByReplacingOccurrencesOfString:@" "
-                                   withString:@""];
+                         stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]]
+                        stringByReplacingOccurrencesOfString:@" "
+                        withString:@""];
     [self registerDeviceToken];
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-	NSLog(@"Error registering device: %@", error);
+    NSLog(@"Error registering device: %@", error);
 }
 
 - (void)registerDeviceToken {
     NSMutableDictionary *params =
-        [@{@"device_token": self.deviceToken,
-          @"device_identifier": self.deviceIdentifier} mutableCopy];
-    if (self.profile[@"email"])
-        params[@"email"] = self.profile[@"email"];
+    [@{@"device_token": self.deviceToken,
+       @"device_identifier": self.deviceIdentifier,
+       @"moderator": @(YES)} mutableCopy];
     [[HTTPClient sharedClient] POST:@"/registerdevice" parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
-        ;
+        NSLog(@"%@", responseObject);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        ;
+        NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
+        NSLog(@"%@", response);
     }];
-
+    
 }
 
 - (void)handleRemoteNotification:(NSDictionary *)userInfo fromLaunch:(BOOL)fromLaunch {
-    [AppDelegate clearCookies];
+/*    [AppDelegate clearCookies];
     [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeGradient];
     HTTPClient *client = [HTTPClient sharedClient];
-    [client GET:@"/singleanswer" parameters:@{@"id": userInfo[@"custom"]} success:^(NSURLSessionDataTask *task, id responseObject) {
-        _handlingPushMessage = NO;
-        [SVProgressHUD dismiss];
-        if (!responseObject[@"profile"] || !responseObject[@"question"])
-            return;
-        
-        //[UIAlertView showAlertViewWithTitle:@"singleanswer" message:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        
-        self.profile = [responseObject[@"profile"] mutableCopy];
-        SingleQuestionViewController *sqvc;
-        SingleAnswerViewController *savc;
-        UITabBarController *tabController = (UITabBarController *)self.window.rootViewController;
-        if (tabController.selectedViewController.presentedViewController)
-            [tabController.selectedViewController.presentedViewController dismissViewControllerAnimated:NO completion:nil];
-        tabController.selectedIndex = 2;
-        UINavigationController *navController = (UINavigationController *)tabController.selectedViewController;
-        [navController popToRootViewControllerAnimated:NO];
-        if ([NSStringFromClass([navController.topViewController class]) isEqualToString:@"HomeViewController"]) {
-            MyQuestionsTableViewController *vc = (MyQuestionsTableViewController *)[tabController.storyboard instantiateViewControllerWithIdentifier:@"MyQuestions"];
-            [navController pushViewController:vc animated:NO];
-        }
-        if ([NSStringFromClass([navController.topViewController class]) isEqualToString:@"MyQuestionsTableViewController"]) {
-            [navController.topViewController viewDidLoad];
-            sqvc = (SingleQuestionViewController *)[tabController.storyboard instantiateViewControllerWithIdentifier:@"SingleQuestion"];
-            sqvc.question = responseObject[@"question"];
-            [navController pushViewController:sqvc animated:NO];
-        }
-        else if ([NSStringFromClass([navController.topViewController class]) isEqualToString:@"SingleQuestionViewController"]) {
-            sqvc = (SingleQuestionViewController *)navController.topViewController;
-            sqvc.question = responseObject[@"question"];
-            [sqvc viewDidLoad];
-        }
-        if (!responseObject[@"answer"])
-            return;
-        if ([NSStringFromClass([navController.topViewController class]) isEqualToString:@"SingleQuestionViewController"]) {
-            savc = (SingleAnswerViewController *)[tabController.storyboard instantiateViewControllerWithIdentifier:@"SingleAnswer"];
-            savc.answer = [responseObject[@"answer"] mutableCopy];
-            [navController pushViewController:savc animated:NO];
-        }
-        else if ([NSStringFromClass([navController.topViewController class]) isEqualToString:@"SingleAnswerViewController"]) {
-            savc = (SingleAnswerViewController *)navController.topViewController;
-            savc.answer = [responseObject[@"answer"] mutableCopy];
-            [savc viewDidLoad];
-            [savc.view setNeedsLayout];
-        }
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        _handlingPushMessage = NO;
-        NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
-        if (response.statusCode == 403) {
-            [SVProgressHUD dismiss];
-            [self handle403];
-        }
-        else
-            [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"HTTP error code %ld", (long)response.statusCode]];
-    }];
+ */
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     [self handleRemoteNotification:userInfo fromLaunch:NO];
-}
-
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    return YES;
 }
 
 + (AppDelegate*)sharedApp {
@@ -297,41 +235,25 @@
 @implementation UIAlertView (BanzaiTokyo)
 
 + (void)showAlertViewWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSArray *)otherButtonTitles {
-	// If no buttons were specified, cancel button becomes "Dismiss"
-	if (!cancelButtonTitle.length && !otherButtonTitles.count)
-		cancelButtonTitle = @"Dismiss";
-	
-	UIAlertView *alertView = [[[self class] alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:cancelButtonTitle otherButtonTitles:nil];
+    // If no buttons were specified, cancel button becomes "Dismiss"
+    if (!cancelButtonTitle.length && !otherButtonTitles.count)
+        cancelButtonTitle = @"Dismiss";
     
-	// Set other buttons
-	[otherButtonTitles enumerateObjectsUsingBlock:^(NSString *button, NSUInteger idx, BOOL *stop) {
-		[alertView addButtonWithTitle:button];
-	}];
+    UIAlertView *alertView = [[[self class] alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:cancelButtonTitle otherButtonTitles:nil];
     
-	// Show alert view
-	[alertView show];
+    // Set other buttons
+    [otherButtonTitles enumerateObjectsUsingBlock:^(NSString *button, NSUInteger idx, BOOL *stop) {
+        [alertView addButtonWithTitle:button];
+    }];
+    
+    // Show alert view
+    [alertView show];
 }
 
 @end
 
-@implementation NSNull (BanzaiTokyo)
-- (NSInteger)length {
-    return 0;
-}
-- (NSInteger)count {
-    return 0;
-}
-@end
-
-@implementation NSDate (BanzaiTokyo)
--(NSDate *) toLocalTime {
-    NSTimeZone *tz = [NSTimeZone localTimeZone];
-    NSInteger seconds = [tz secondsFromGMTForDate: self];
-    return [NSDate dateWithTimeInterval: seconds sinceDate: self];
-}
--(NSDate *) toGlobalTime {
-    NSTimeZone *tz = [NSTimeZone localTimeZone];
-    NSInteger seconds = -[tz secondsFromGMTForDate: self];
-    return [NSDate dateWithTimeInterval: seconds sinceDate: self];
+@implementation NSString(BanzaiTokyo)
+-(NSString *)stringValue {
+    return self;
 }
 @end

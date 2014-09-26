@@ -72,7 +72,6 @@
             cell.detailTextLabel.text = q[@"answer"];
         else
             cell.detailTextLabel.text = @"";
-        [AppDelegate adjustLabelHeight:cell.detailTextLabel minHeight:20.0 forSize:self.view.frame.size];
     }
     else {
         cell.textLabel.text = @"";
@@ -91,11 +90,11 @@
         NSDictionary *q = [answers objectAtIndex:indexPath.row];
 
         if (q[@"answer"])
-            height = [AppDelegate heightForText:q[@"answer"] andFont:[UIFont systemFontOfSize:14.0] forSize:self.view.frame.size];
+            height = [AppDelegate heightForText:q[@"answer"] andFont:[UIFont systemFontOfSize:11.0] forSize:self.view.frame.size];
         else
             height = 20.0;
         height += [AppDelegate heightForText:q[@"question"] andFont:[UIFont systemFontOfSize:16.0] forSize:self.view.frame.size];
-        return MAX(44.0, height + 20.0);
+        return MAX(44.0, height);
     }
     else {
         return self.tableView.frame.size.height;
