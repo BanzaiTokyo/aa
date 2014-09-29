@@ -640,7 +640,7 @@ class ModerateQuestions(BaseHandler):
    def get(self):
       if self.request.get('userid'):
          user = self.request.get('userid')
-         if user.find('@'):
+         if user.find('@') >= 0:
             user = User.get_by_id(user)
          else:
             user = User.get_by_id(int(user))
@@ -688,7 +688,7 @@ class ModerateAnswers(BaseHandler):
    def get(self):
       if self.request.get('userid'):
          user = self.request.get('userid')
-         if user.find('@'):
+         if user.find('@') >= 0:
             user = User.get_by_id(user)
          else:
             user = User.get_by_id(int(user))
@@ -794,13 +794,23 @@ class ModerateAnswers(BaseHandler):
          self.success(True)
 
 
+class UserList(BaseHandler):
+   def get(self):
+      users = User.query().fetch(100)
+      result = []
+      for user in users:
+         result += [{'id': user.key.id(), 'email': user.email, 'registeredon': user.registeredon.strftime('%Y-%m-%d %H:%M:%S')}]
+      self.output(result)
+
+
 class UserInfo(BaseHandler):
    def get(self):
       user = self.request.get('userid')
-      if user.find('@'):
+      if user.find('@') >= 0:
          user = User.get_by_id(user)
       else:
-         user = User.get_by_id(int(user))
+         user = int(user)
+         user = User.get_by_id(user)
       if not user:
          self.error('User with id {0} not found'.format(self.request.get('userid')))
          return
@@ -974,6 +984,7 @@ application = webapp2.WSGIApplication([
 
    ('/moderateq', ModerateQuestions),
    ('/moderatea', ModerateAnswers),
+   ('/userlist', UserList),
    ('/userinfo', UserInfo),
 
    ('/populatequestions', SystemQuestion),

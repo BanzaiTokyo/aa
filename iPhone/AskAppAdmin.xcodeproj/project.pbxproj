@@ -15,6 +15,7 @@
 		8E0510B419CAFFE30088D1CF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E0510B319CAFFE30088D1CF /* AppDelegate.m */; };
 		8E0510B719CAFFE30088D1CF /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E0510B519CAFFE30088D1CF /* Main_iPhone.storyboard */; };
 		8E0510BF19CAFFE30088D1CF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E0510BE19CAFFE30088D1CF /* Images.xcassets */; };
+		8E0DFE4919D95ABA005B3504 /* UsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E0DFE4819D95ABA005B3504 /* UsersViewController.m */; };
 		8EC2DF5319D2A48900BF65ED /* UserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EC2DF5219D2A48900BF65ED /* UserInfoViewController.m */; };
 		8ECC731F19D1603D0015D672 /* ModerationTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ECC731E19D1603D0015D672 /* ModerationTableViewController.m */; };
 		D9A5CDA328114E96A5E694E5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80675B793E234940B25EAF91 /* libPods.a */; };
@@ -34,6 +35,8 @@
 		8E0510B319CAFFE30088D1CF /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		8E0510B619CAFFE30088D1CF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
 		8E0510BE19CAFFE30088D1CF /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		8E0DFE4719D95ABA005B3504 /* UsersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersViewController.h; sourceTree = "<group>"; };
+		8E0DFE4819D95ABA005B3504 /* UsersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersViewController.m; sourceTree = "<group>"; };
 		8EC2DF5119D2A48900BF65ED /* UserInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfoViewController.h; sourceTree = "<group>"; };
 		8EC2DF5219D2A48900BF65ED /* UserInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfoViewController.m; sourceTree = "<group>"; };
 		8ECC731D19D1603D0015D672 /* ModerationTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModerationTableViewController.h; sourceTree = "<group>"; };
@@ -91,6 +94,8 @@
 				8E0510B219CAFFE30088D1CF /* AppDelegate.h */,
 				8E0510B319CAFFE30088D1CF /* AppDelegate.m */,
 				8E0510B519CAFFE30088D1CF /* Main_iPhone.storyboard */,
+				8E0DFE4719D95ABA005B3504 /* UsersViewController.h */,
+				8E0DFE4819D95ABA005B3504 /* UsersViewController.m */,
 				8ECC731D19D1603D0015D672 /* ModerationTableViewController.h */,
 				8ECC731E19D1603D0015D672 /* ModerationTableViewController.m */,
 				8EC2DF5119D2A48900BF65ED /* UserInfoViewController.h */,
@@ -213,6 +218,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8E0510B419CAFFE30088D1CF /* AppDelegate.m in Sources */,
+				8E0DFE4919D95ABA005B3504 /* UsersViewController.m in Sources */,
 				8EC2DF5319D2A48900BF65ED /* UserInfoViewController.m in Sources */,
 				8E0510B019CAFFE30088D1CF /* main.m in Sources */,
 				8ECC731F19D1603D0015D672 /* ModerationTableViewController.m in Sources */,

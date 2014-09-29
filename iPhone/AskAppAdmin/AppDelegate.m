@@ -143,8 +143,8 @@
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        //_sharedClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:@"http://localhost:8080"]];
-        _sharedClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:@"http://aaask-app.appspot.com"]];
+        _sharedClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:@"http://localhost:8080"]];
+        //_sharedClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:@"http://aaask-app.appspot.com"]];
     });
     
     return _sharedClient;
