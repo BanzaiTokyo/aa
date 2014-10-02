@@ -7,6 +7,7 @@
 //
 
 #import "ReportViewController.h"
+#import "QuestionsViewController.h"
 
 @interface ReportViewController ()
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *reasons;
@@ -17,18 +18,9 @@
 
 @implementation ReportViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.question.text = self.questionText;
+    self.question.text = [AppDelegate sharedApp].profile[@"questions"][self.questionIdx][@"question"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -55,7 +47,7 @@
 }
 
 - (IBAction)sendReport:(id)sender {
-    NSMutableDictionary *params = [@{@"question":@(self.questionIdx)} mutableCopy];
+    NSMutableDictionary *params = [@{@"question":[AppDelegate sharedApp].profile[@"questions"][self.questionIdx][@"id"]} mutableCopy];
     NSInteger reasonIdx = self.reasons.count;
     for (int i=0; i < self.reasons.count; i++)
         if (((UIButton *)self.reasons[i]).selected) {
@@ -76,8 +68,8 @@
             [SVProgressHUD showSuccessWithStatus:@"Question reported"];
             [AppDelegate sharedApp].profile = [responseObject mutableCopy];
             UIViewController *vc = self.navigationController.viewControllers[self.navigationController.viewControllers.count-2];
-            if ([vc isKindOfClass:[UITableViewController class]])
-                [((UITableViewController *)vc).tableView reloadData];
+            if ([vc isKindOfClass:[QuestionsViewController class]])
+                [(QuestionsViewController *)vc showQuestion];
             [self.navigationController popViewControllerAnimated:YES];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {

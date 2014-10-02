@@ -39,7 +39,11 @@ class User(ndb.Model):
    deviceidentifier  = ndb.StringProperty()
    devicetoken       = ndb.StringProperty(indexed=False)
    email             = ndb.StringProperty()
-   registeredon      = ndb.DateTimeProperty(auto_now_add=True)
+   registeredon      = ndb.DateTimeProperty(auto_now_add=True, indexed=False)
+   lastvisit         = ndb.DateTimeProperty(indexed=False)
+   #can_answer = False - some of assigned questions are "new" or "in review" or not rated by the asker.
+   #User is not allowed to refresh question list
+   can_answer        = ndb.BooleanProperty(indexed=False, default=True)
 
 class ApnConfig(ndb.Model):
    gcm_api_key = ndb.StringProperty(indexed=False)

@@ -92,8 +92,24 @@
 
 - (void)handleRemoteNotification:(NSDictionary *)userInfo fromLaunch:(BOOL)fromLaunch {
     [AppDelegate clearCookies];
-    [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeGradient];
     HTTPClient *client = [HTTPClient sharedClient];
+    if ([userInfo[@"custom"] isEqualToString:@"reload_questions"]) {
+        UITabBarController *tabController = (UITabBarController *)self.window.rootViewController;
+        if (tabController.selectedViewController.presentedViewController)
+            [tabController.selectedViewController.presentedViewController dismissViewControllerAnimated:NO completion:nil];
+        tabController.selectedIndex = 2;
+        UINavigationController *navController = (UINavigationController *)tabController.selectedViewController;
+        [navController popToRootViewControllerAnimated:NO];
+        HomeViewController *vc;
+        if (![NSStringFromClass([navController.topViewController class]) isEqualToString:@"HomeViewController"])
+            vc = [tabController.storyboard instantiateViewControllerWithIdentifier:@"Home"];
+        else if (!_handlingPushMessage) {
+            vc = (HomeViewController *)navController.topViewController;
+            [vc showRefreshAndReload];
+        }
+        return;
+    }
+    [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeGradient];
     [client GET:@"/singleanswer" parameters:@{@"id": userInfo[@"custom"]} success:^(NSURLSessionDataTask *task, id responseObject) {
         _handlingPushMessage = NO;
         [SVProgressHUD dismiss];
@@ -102,7 +118,7 @@
         
         //[UIAlertView showAlertViewWithTitle:@"singleanswer" message:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         
-        self.profile = [responseObject[@"profile"] mutableCopy];
+        [AppDelegate sharedApp].profile = [responseObject[@"profile"] mutableCopy];
         SingleQuestionViewController *sqvc;
         SingleAnswerViewController *savc;
         UITabBarController *tabController = (UITabBarController *)self.window.rootViewController;
@@ -156,6 +172,10 @@
     [self handleRemoteNotification:userInfo fromLaunch:NO];
 }
 
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    [self handleRemoteNotification:userInfo fromLaunch:NO];    
+}
+
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     return YES;
 }
@@ -196,6 +216,7 @@
         presenter = tb.selectedViewController;
     [presenter presentViewController:vc animated:YES completion:nil];
 }
+
 @end
 
 @implementation HTTPClient
@@ -205,8 +226,8 @@
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        //_sharedClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:@"http://localhost:8080"]];
-        _sharedClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:@"http://aaask-app.appspot.com"]];
+        _sharedClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:@"http://localhost:8080"]];
+        //_sharedClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:@"http://aaask-app.appspot.com"]];
     });
     
     return _sharedClient;

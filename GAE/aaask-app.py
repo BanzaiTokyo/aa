@@ -50,7 +50,7 @@ def authorized(fn):
    return wrapper
 
 
-def get_new_questions(user):
+def get_new_questions(user, batch_updates = False):
    query = Question.query(Question.moderated == 1)
    query = query.order(Question.queue).order(Question.numassigns).order(Question.askedon)
    new_questions = []
@@ -77,22 +77,26 @@ def get_new_questions(user):
          break
    if len(new_questions) < QUESTIONS_NUMBER:
       logging.error('no more questions')
-   if user:
+   if batch_updates:
+      return new_questions
+   else:
       user.assignedquestions = new_questions
       user.assignedon = datetime.datetime.utcnow()
       user.put()
-   else:
-      return new_questions
 
 
-def update_assigned_questions(user, batch_updates = False):
+def num_unanswered_questions(user):
    num_unanswered = 0
    for aq in user.assignedquestions:
       if aq.status == 'new' or aq.status == 'in review':
          num_unanswered += 1
+   return num_unanswered
+
+def update_assigned_questions(user, batch_updates = False):
+   num_unanswered = num_unanswered_questions(user)
    if batch_updates:
       if num_unanswered == 0:
-         user.assignedquestions = get_new_questions()
+         user.assignedquestions = get_new_questions(user, batch_updates)
          user.assignedon = datetime.datetime.utcnow()
    else:
       if num_unanswered == 0:
@@ -152,28 +156,38 @@ class BaseHandler(webapp2.RequestHandler):
       questions = ndb.get_multi(questions)
       self.user._questions = []
       for q in questions:
+         answersQuery = Answer.query(Answer.question == q.key, ndb.OR(Answer.moderated == 1,
+                                     Answer.answeredby == self.user.key)).order(-Answer.answeredon)
          assignedquestion = None
          for aq in self.user.assignedquestions:
             if aq.question == q.key:
                assignedquestion = aq
          q = {'id': q.key.id(), 'question': q.question, 'status': assignedquestion.status}
+         q['answers'] = []
+         for a in answersQuery:
+            q['answers'] += [{'id': a.key.id(), 'answer': a.answer}]
          self.user._questions += [q]
 
    def refresh_questions(self):
       logging.info('Enter refresh')
-      if datetime.datetime.utcnow() - self.user.assignedon > datetime.timedelta(hours=1):
-         for aq in self.user.assignedquestions:
-            old_question = aq.question.get()
-            if old_question:
-               old_question.numassigns -= 1
-               old_question.put()
-         get_new_questions(self.user)
+      if self.user.can_answer:
+         if datetime.datetime.utcnow() - self.user.assignedon > datetime.timedelta(hours=1):
+            for aq in self.user.assignedquestions:
+               old_question = aq.question.get()
+               if old_question:
+                  old_question.numassigns -= 1
+                  old_question.put()
+            get_new_questions(self.user)
+         else:
+            logging.info('Refresh: assigned on {0}, now {1}'.format(self.user.assignedon, datetime.datetime.utcnow()))
       else:
-         logging.info('Refresh: assigned on {0}, now {1}'.format(self.user.assignedon, datetime.datetime.utcnow()))
+         logging.info('Refresh called, but the user has to wait for answers review')
+
 
    def construct_user_profile(self):
       return {'email':self.user.key.id(), 'nickname': self.user.nickname, 'questions': self.user._questions,
-              'assignedon': self.user.assignedon.strftime('%Y-%m-%d %H:%M:%S'),'points': self.user.points}
+              'assignedon': self.user.assignedon.strftime('%Y-%m-%d %H:%M:%S'),'points': self.user.points,
+              'can_answer': self.user.can_answer}
 
    def output_user_profile(self):
       self.extract_assigned_questions()
@@ -419,13 +433,18 @@ class MakeAnswer(BaseHandler):
          self.error('Question {0} not found'.format(form['question']))
          return
       assignedquestion = None
+      has_unanswered_questions = False
       for aq in self.user.assignedquestions:
          if aq.question == question:
             assignedquestion = aq
+         elif aq.status == 'new':
+            has_unanswered_questions = True
       if not assignedquestion:
          self.error('This question is no more assigned to you')
          return
       assignedquestion.status = 'in review'
+      if not has_unanswered_questions:
+         self.user.can_answer = False
       self.user.put()
 
       answer = Answer()
@@ -435,7 +454,21 @@ class MakeAnswer(BaseHandler):
       answer.answeredon = datetime.datetime.utcnow()
       answer.put()
 
-      self.output_user_profile()
+      self.extract_assigned_questions()
+      for q in self.user._questions:
+         if q['id'] == question.id():
+            if not 'answers' in q.keys():
+               q['answers'] = []
+            found = False
+            answer_key_id = answer.key.id()
+            for a in q['answers']:
+               if a['id'] == answer_key_id:
+                  found = True
+                  break
+            if not found:
+               q['answers'].insert(0, {'id': answer_key_id, 'answer': answer_text})
+
+      self.output(self.construct_user_profile())
 
       #notify admin
       try:
@@ -521,6 +554,21 @@ class RateAnswer(BaseHandler):
       answer.funny = funny
       answer.rated = 1
       answer.put()
+
+      if answer.answeredby:
+         answerer = answer.answeredby.get()
+         if answerer:
+            if answerer.devicetoken and num_unanswered_questions(answerer) == 0:
+               #and datetime.datetime.utcnow() - self.user.assignedon < datetime.timedelta(hours=1):
+               try:
+                  from push import SendPushMessage
+                  sender = SendPushMessage()
+                  sender.post(answerer.devicetoken, 'reload_questions', 'You have new questions')
+               except Exception, e:
+                  receiver = answerer.email if hasattr(answerer, 'email') else answer.answeredby.id()
+                  logging.error('Push message to {0} failed {1}'.format(receiver, e))
+            answerer.can_answer = True
+            answerer.put()
 
       if getanotheranswer:
          if self.user.points < POINTS_TO_ASK:
@@ -772,16 +820,31 @@ class ModerateAnswers(BaseHandler):
          if modified:
             update_users += [user]
 
-         if question.askedby and action == 1:
-            asker = question.askedby.get()
-            if asker and asker.devicetoken:
-               try:
-                  from push import SendPushMessage
-                  sender = SendPushMessage()
-                  sender.post(asker.devicetoken, answer.key.id())
-               except Exception, e:
-                  receiver = asker.email if hasattr(asker, 'email') else question.askedby.id()
-                  logging.error('Push message to {0} failed {1}'.format(receiver, e))
+         if action == 1:
+            if question.askedby:
+               asker = question.askedby.get()
+               if asker and asker.devicetoken:
+                  try:
+                     from push import SendPushMessage
+                     sender = SendPushMessage()
+                     sender.post(asker.devicetoken, answer.key.id(), 'You have a new answer')
+                  except Exception, e:
+                     receiver = asker.email if hasattr(asker, 'email') else question.askedby.id()
+                     logging.error('Push message to {0} failed {1}'.format(receiver, e))
+            else:
+               answerer = answer.answeredby.get()
+               if answerer:
+                  if answerer.devicetoken and num_unanswered_questions(answerer) == 0:
+                     try:
+                        from push import SendPushMessage
+                        sender = SendPushMessage()
+                        sender.post(answerer.devicetoken, 'reload_questions', 'You have new questions')
+                     except Exception, e:
+                        receiver = answerer.email if hasattr(answerer, 'email') else answer.answeredby.id()
+                        logging.error('Push message to {0} failed {1}'.format(receiver, e))
+                  answerer.can_answer = True
+                  answerer.put()
+
 
       if len(update_users):
          ndb.put_multi(update_users)
@@ -944,20 +1007,15 @@ class TestPush(webapp2.RequestHandler):
             self.response.write('A: {0}, Q: {1}'.format(answer.key.id(), question.key.id()))
             sender.post('bc49fd3d483e8975933828872aabd848941d4cdc6835550c5cd6cb162c239494', answer.key.id())
             break"""
-      sender.post_for_admin(['2330ed34f16c583c443c2e41484b09c6b46de04781ea6c460a9ab488533c15d2'], 'test admin')
+      #sender.post_for_admin(['2330ed34f16c583c443c2e41484b09c6b46de04781ea6c460a9ab488533c15d2'], 'test admin')
+      sender.post_can_answer('bc49fd3d483e8975933828872aabd848941d4cdc6835550c5cd6cb162c239494')
       self.response.write('OK')
 
 class UpdateAssigned(webapp2.RequestHandler):
    def get(self):
-      u = User.get_by_id(6333186975989760)
-      u.assignedon = datetime.datetime.utcnow() - datetime.timedelta(hours=2)
-      u.put()
-      return
-      users = Question.query().fetch()
-      for u in users:
-         if u.askedby:
-            u.moderated = 0
-            u.put()
+      user = ndb.Key(urlsafe='agtzfmFhYXNrLWFwcHIRCxIEVXNlciIHMUAxLmNvbQw').get()
+      user.assignedon = user.assignedon - datetime.timedelta(minutes=58)
+      user.put()
       self.response.write('OK')
 
 config = {}

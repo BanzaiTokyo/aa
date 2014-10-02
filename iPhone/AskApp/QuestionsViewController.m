@@ -11,6 +11,12 @@
 #import "ReportViewController.h"
 
 @interface QuestionsViewController ()<UIAlertViewDelegate, UIScrollViewDelegate>
+@property (weak, nonatomic) IBOutlet UILabel *topLabel;
+@property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UIButton *btnAnswer;
+@property (weak, nonatomic) IBOutlet UIProgressView *pgsTime;
+@property (weak, nonatomic) IBOutlet UIView *toolbarView;
 @end
 
 @implementation QuestionsViewController {
@@ -18,6 +24,8 @@
     NSArray *refuseReasons;
     NSDateFormatter *dateFormatter;
     NSTimer *timer;
+    UIView *congratulationsView;
+    BOOL hasUnansweredQuestions;
 }
 
 - (void)viewDidLoad {
@@ -29,6 +37,7 @@
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
 
     questionViews = [NSMutableArray new];
+    hasUnansweredQuestions = YES;
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -36,17 +45,21 @@
         return;
     if (![AppDelegate sharedApp].profile)
         [self reloadQuestions:nil];
-    else {
+    else if ([[AppDelegate sharedApp].profile[@"can_answer"] boolValue]) {
         NSDate *dateAssigned = [dateFormatter dateFromString: [AppDelegate sharedApp].profile[@"assignedon"]];
         NSTimeInterval dt = -[dateAssigned timeIntervalSinceNow];
         if (dt > MAX_ANSWER_TIME)
             [self reloadQuestions:self];
         else {
-            if (!questionViews.count)
+            if (!questionViews.count) {
                 [self showQuestion];
+                [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width,0) animated:NO];
+            }
             [self runTimer];
         }
     }
+    else
+        [self showCongratulations];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -59,35 +72,108 @@
 }
 
 - (void)showQuestion {
+    if (!self.isViewLoaded)
+        return; //prevent scroll freezing when called from HomeViewController
+    self.title = @"Questions to Me";
     NSArray *questions = [AppDelegate sharedApp].profile[@"questions"];
     
     self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width*questions.count, self.scrollView.contentSize.height);
     self.pageControl.numberOfPages = questions.count;
+    self.toolbarView.hidden = NO;
+    self.topLabel.text = [NSString stringWithFormat:@"You have %@ points\nEarn more by helping others fast", [AppDelegate sharedApp].profile[@"points"]];
+    
+    for (UIView *v in questionViews)
+        [v removeFromSuperview];
+    [congratulationsView removeFromSuperview];
+    congratulationsView = nil;
+    [questionViews removeAllObjects];
+    NSLog(@"Page %d", self.pageControl.currentPage);
+    for (int t=0; t<3; t++) {
+        int i;
+        if (self.pageControl.currentPage == 0)
+            i = t ? t-1 : questions.count - 1;
+        else if (self.pageControl.currentPage == questions.count - 1)
+            i = t==2 ? 0 : self.pageControl.currentPage - 1 + t;
+        else
+            i = self.pageControl.currentPage - 1 + t;
+        
+        NSLog(@"%d", i);
+        CGFloat w = self.scrollView.bounds.size.width;
+        UIView *questionView = [[UIView alloc] initWithFrame:CGRectMake(w*t, 0, w, self.scrollView.bounds.size.height)];
+        UIView *roundRect = [[UIView alloc] initWithFrame:CGRectMake(10, 8, 300, 200)];
+        roundRect.layer.masksToBounds = YES;
+        roundRect.layer.cornerRadius = 20.0;
+        roundRect.backgroundColor = [UIColor whiteColor];
+        [questionView addSubview:roundRect];
+        UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(20, 19, w - 60, questionView.frame.size.height/2 - 20)];
+        l.numberOfLines = 0;
+        l.adjustsFontSizeToFitWidth = YES;
+        l.minimumScaleFactor = 0.1;
+        l.lineBreakMode = NSLineBreakByWordWrapping;
+        l.text = questions[i][@"question"];
+        [l sizeToFit];
+        [roundRect addSubview:l];
+        UIButton *b = [UIButton buttonWithType:UIButtonTypeSystem];
+        b.frame = CGRectMake(w - 35, 15, 20, 20);
+        [b setTitle:@"X" forState:UIControlStateNormal];
+        [b addTarget:self action:@selector(reportQuestion) forControlEvents:UIControlEventTouchUpInside];
+        b.tag = 1;
+        [questionView addSubview:b];
+        l = [[UILabel alloc] initWithFrame:CGRectMake(30, 220, 260, 20)];
+        l.adjustsFontSizeToFitWidth = YES;
+        l.minimumScaleFactor = 0.1;
+        int n = [questions[i][@"answers"] count];
+        if (!n)
+            l.text = @"There are no answers yet";
+        else if (n == 1) {
+            if ([questions[i][@"status"] isEqualToString:@"new"])
+                l.text = @"There is 1 answer. Post yours to see it";
+        }
+        else {
+            if ([questions[i][@"status"] isEqualToString:@"new"])
+                l.text = [NSString stringWithFormat: @"There are %d answers. Post yours to see them", n];
+            else
+                l.text = [NSString stringWithFormat: @"There are %d answers.", n];
+        }
+        [questionView addSubview:l];
+        [self.scrollView addSubview:questionView];
+        [questionViews addObject:questionView];
+    }
+    NSLog(@"%1.2f", self.scrollView.contentOffset.x);
+    [self updateTimer:nil];
+    
+    BOOL unanswered = [questions[self.pageControl.currentPage][@"status"] isEqualToString:@"new"];
+    ((UIButton *)([questionViews[1] viewWithTag:1])).enabled = unanswered;
+    [self.btnAnswer setTitle:unanswered ? @"Answer" : @"View answers" forState:UIControlStateNormal];
+}
+
+- (void)showCongratulations {
+    self.title = @"Congratulations!";
+    self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.scrollView.contentSize.height);
+    self.topLabel.text = @"You will get more questions sooner\nif one of your answers is voted as helpful";
     
     for (UIView *v in questionViews)
         [v removeFromSuperview];
     [questionViews removeAllObjects];
-    for (int i=0; i<questions.count; i++) {
-        CGFloat w = self.scrollView.bounds.size.width;
-        UIView *questionView = [[UIView alloc] initWithFrame:CGRectMake(w*i, 0, w, self.scrollView.bounds.size.height)];
-        UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, w - 20, questionView.frame.size.height/2 - 20)];
-        l.numberOfLines = 0;
-        l.lineBreakMode = NSLineBreakByWordWrapping;
-        l.text = questions[i][@"question"];
-        [l sizeToFit];
-        [questionView addSubview:l];
-        if (![questions[i][@"status"] isEqualToString:@"new"]) {
-            l = [[UILabel alloc] initWithFrame:questionView.frame];
-            l.text = [questions[i][@"status"] capitalizedString];
-            [l sizeToFit];
-            l.center = CGPointMake(w/2, questionView.frame.size.height-l.frame.size.height/2-20);
-            [questionView addSubview:l];
-        }
-        [self.scrollView addSubview:questionView];
-        [questionViews addObject:questionView];
-    }
-    [self updateTimer:nil];
-    [self scrollPage:self.pageControl];
+    if (congratulationsView)
+        return;
+    CGFloat w = self.scrollView.bounds.size.width;
+    congratulationsView = [[UIView alloc] initWithFrame:CGRectMake(10, 8, 300, 200)];
+    congratulationsView.layer.masksToBounds = YES;
+    congratulationsView.layer.cornerRadius = 20.0;
+    congratulationsView.backgroundColor = [UIColor whiteColor];
+    UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(40, 19, w - 40, congratulationsView.frame.size.height/2 - 20)];
+    l.numberOfLines = 0;
+    l.adjustsFontSizeToFitWidth = NO;
+    l.minimumScaleFactor = 0.1;
+    l.lineBreakMode = NSLineBreakByWordWrapping;
+    l.textAlignment = NSTextAlignmentCenter;
+    l.font = [UIFont systemFontOfSize:26];
+    l.text = [NSString stringWithFormat: @"You have done an awesome job!\n\n\n+%d points", [[AppDelegate sharedApp].profile[@"questions"] count]*POINTS_FOR_ANSWER];
+    [l sizeToFit];
+    l.center = CGPointMake(congratulationsView.frame.size.width/2, l.center.y);
+    [congratulationsView addSubview:l];
+    [self.scrollView addSubview:congratulationsView];
 }
 
 - (void)reloadQuestions:(id)sender {
@@ -104,6 +190,7 @@
         [self runTimer];
         if (responseObject[@"email"]) {
             [AppDelegate sharedApp].profile = [responseObject mutableCopy];
+            self.scrollView.contentOffset = CGPointMake(self.scrollView.frame.size.width, 0);
             [self showQuestion];
         }
         else {
@@ -129,37 +216,47 @@
 #pragma mark - Scrolling
 
 - (IBAction)scrollPage:(UIPageControl *)sender {
-    CGFloat pageWidth = self.scrollView.frame.size.width;
-    CGPoint pos = CGPointMake(self.pageControl.currentPage*pageWidth, self.scrollView.contentOffset.y);
-    [self.scrollView scrollRectToVisible:CGRectMake(pos.x, pos.y, pageWidth, self.scrollView.frame.size.height) animated:YES];
-    
-    BOOL unanswered;
-    if (sender.currentPage < [[AppDelegate sharedApp].profile[@"questions"] count])
-        unanswered = [[AppDelegate sharedApp].profile[@"questions"][sender.currentPage][@"status"] isEqualToString:@"new"];
-    else
-        unanswered = NO;
-    self.btnAnswer.enabled = unanswered;
-    self.btnRemove.enabled = unanswered;
-    self.btnReport.enabled = unanswered;
+    [self scrollViewDidEndDecelerating:self.scrollView];
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+/*- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     CGFloat pageWidth = self.scrollView.frame.size.width;
     NSInteger page = (NSInteger)floor((self.scrollView.contentOffset.x * 2.0f + pageWidth) / (pageWidth * 2.0f));
     self.pageControl.currentPage = page;
     
+}*/
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    if (scrollView.contentOffset.x > scrollView.frame.size.width) {
+        // We are moving forward. Load the current doc data on the first page.
+        self.pageControl.currentPage = (self.pageControl.currentPage >= [[AppDelegate sharedApp].profile[@"questions"] count]-1) ? 0 : self.pageControl.currentPage + 1;
+        [self showQuestion];
+    }
+    if (scrollView.contentOffset.x < scrollView.frame.size.width) {
+        // We are moving backward. Load the current doc data on the last page.
+        self.pageControl.currentPage = (self.pageControl.currentPage == 0) ? [[AppDelegate sharedApp].profile[@"questions"] count] - 1 : self.pageControl.currentPage - 1;
+        
+        [self showQuestion];
+    }
+    
+    // Reset offset back to middle page
+    [scrollView setContentOffset:CGPointMake(scrollView.frame.size.width,0) animated:NO];
+
     BOOL unanswered;
-    if (page < [[AppDelegate sharedApp].profile[@"questions"] count])
-        unanswered = [[AppDelegate sharedApp].profile[@"questions"][page][@"status"] isEqualToString:@"new"];
+    if (self.pageControl.currentPage < [[AppDelegate sharedApp].profile[@"questions"] count])
+        unanswered = [[AppDelegate sharedApp].profile[@"questions"][self.pageControl.currentPage][@"status"] isEqualToString:@"new"];
     else
         unanswered = NO;
-    self.btnAnswer.enabled = unanswered;
-    self.btnRemove.enabled = unanswered;
-    self.btnReport.enabled = unanswered;
+    ((UIButton *)([questionViews[self.pageControl.currentPage] viewWithTag:1])).enabled = unanswered;
+    [self.btnAnswer setTitle:unanswered ? @"Answer" : @"View answers" forState:UIControlStateNormal];
 }
 
 #pragma mark - Actions
--(void)updateTimer:(NSTimer *)timer {
+-(void)updateTimer:(NSTimer *)timer1 {
+    if (![[AppDelegate sharedApp].profile[@"can_answer"] boolValue]) {
+        [timer1 invalidate];
+        return;
+    }
     NSDate *dateAssigned = [dateFormatter dateFromString: [AppDelegate sharedApp].profile[@"assignedon"]];
     NSTimeInterval dt = -[dateAssigned timeIntervalSinceNow];
     self.pgsTime.progress = 1.0 - fabs(dt/MAX_ANSWER_TIME);
@@ -215,9 +312,10 @@
     else if ([segue.identifier isEqualToString:@"Report"]) {
         ReportViewController *vc = (ReportViewController *)segue.destinationViewController;
         vc.questionIdx = self.pageControl.currentPage;
-        NSDictionary *question = [[AppDelegate sharedApp].profile[@"questions"] objectAtIndex:vc.questionIdx];
-        vc.questionText = question[@"question"];
     }
 }
 
+- (void)reportQuestion {
+    [self performSegueWithIdentifier:@"Report" sender:nil];
+}
 @end

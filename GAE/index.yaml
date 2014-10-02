@@ -18,6 +18,20 @@ indexes:
 
 - kind: Answer
   properties:
+  - name: answeredby
+  - name: question
+  - name: answeredon
+    direction: desc
+
+- kind: Answer
+  properties:
+  - name: moderated
+  - name: question
+  - name: answeredon
+    direction: desc
+
+- kind: Answer
+  properties:
   - name: question
   - name: moderated
   - name: answeredon

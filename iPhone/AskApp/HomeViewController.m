@@ -7,6 +7,7 @@
 //
 
 #import "HomeViewController.h"
+#import "QuestionsViewController.h"
 
 @interface HomeViewController ()
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -27,12 +28,7 @@
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(reloadProfile:) forControlEvents:UIControlEventValueChanged];
     [self.scrollView addSubview:self.refreshControl];
-
-    if (![AppDelegate sharedApp].handlingPushMessage) {
-        [self.refreshControl beginRefreshing];
-        [self reloadProfile:self.refreshControl];
-        self.scrollView.contentOffset = CGPointMake(0, -64);
-    }
+    [self showRefreshAndReload];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -43,6 +39,14 @@
     self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height + 1);
 }
 
+- (void)showRefreshAndReload {
+    if (![AppDelegate sharedApp].handlingPushMessage) {
+        [self.refreshControl beginRefreshing];
+        [self reloadProfile:self.refreshControl];
+        self.scrollView.contentOffset = CGPointMake(0, -64);
+    }
+}
+
 - (void)reloadProfile:(UIRefreshControl *)refreshControl {
     for (UIView *v in self.scrollView.subviews)
         if ([v isKindOfClass:[UIButton class]])
@@ -50,12 +54,19 @@
     HTTPClient *client = [HTTPClient sharedClient];
 //    [client POST:@"/login" parameters:@{@"email": @"banzaitokyo@gmail.com", @"password": @"kostroma"} success:^(NSURLSessionDataTask *task, id responseObject) {
     [client GET:@"/profile" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        [AppDelegate sharedApp].handlingPushMessage = NO;
         [self.refreshControl endRefreshing];
         if (responseObject[@"error"]) {
             [UIAlertView showAlertViewWithTitle:@"Error" message: responseObject[@"error"] cancelButtonTitle:@"OK" otherButtonTitles:nil];
         }
         else {
             [AppDelegate sharedApp].profile = [responseObject mutableCopy];
+            UITabBarController *tabController = (UITabBarController *)[AppDelegate sharedApp].window.rootViewController;
+            UINavigationController *navController = (UINavigationController *)tabController.viewControllers[0];
+            if (navController && navController.viewControllers[0]) {
+                QuestionsViewController *vc = navController.viewControllers[0];
+                [vc showQuestion];
+            }
             [self updateScreen];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {

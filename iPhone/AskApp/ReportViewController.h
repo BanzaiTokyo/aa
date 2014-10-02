@@ -10,5 +10,4 @@
 
 @interface ReportViewController : UIViewController
 @property (nonatomic) NSInteger questionIdx;
-@property (nonatomic, weak) NSString *questionText;
 @end

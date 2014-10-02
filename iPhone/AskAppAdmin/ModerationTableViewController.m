@@ -29,7 +29,9 @@
     if (self.profile)
         url = [NSString stringWithFormat:@"%@?userid=%@", url, [self.profile[@"userid"] stringValue]];
     [self setCountsLabel];
-    [self reloadItems:nil];
+    self.tableView.contentOffset = CGPointMake(0, -64);
+    [self.refreshControl beginRefreshing];
+    [self reloadItems:self.refreshControl];
 }
 
 - (void)didReceiveMemoryWarning

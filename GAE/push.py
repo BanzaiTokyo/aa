@@ -80,13 +80,13 @@ def sendSingleApnsMessage(self, message, token):
 
 #Sample POST Data -->  platform=1&token=<device token string>&message={"request":{"data":{"custom": "json data"}, "ios_message":"This is a test","ios_button_text":"yeah!","ios_badge": -1, "ios_sound": "soundfile", "android_collapse_key": "collapsekey"}}
 class SendPushMessage():
-   def post(self, token, answerID):
+   def post(self, token, answerID, message):
       #Send a single message to a device token
       message = {'request': {'data': {'custom': answerID}, 'ios_message': 'You have a new answer', 'ios_badge': 1}}
       message = convertToApnsMessage(self, message)
       sendSingleApnsMessage(self, message, token)
 
    def post_for_admin(self, tokens, message):
-      message = {'request': {'data': {'custom': 0}, 'ios_message': message, 'ios_badge': 1}}
-      message = convertToApnsMessage(self, message)
-      sendMulticastApnsMessage(self, tokens, message, True)
+    message = {'request': {'data': {'custom': 0}, 'ios_message': message, 'ios_badge': 1}}
+    message = convertToApnsMessage(self, message)
+    sendMulticastApnsMessage(self, tokens, message, True)
