@@ -9,6 +9,7 @@
 #define MAX_ANSWER_TIME   (60.0*60.0)
 #define POINTS_TO_ASK     3
 #define POINTS_FOR_ANSWER 1
+#define MAX_TEXT_LENGTH   140
 
 #import <UIKit/UIKit.h>
 #import <AFNetworking/AFHTTPSessionManager.h>

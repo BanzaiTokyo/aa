@@ -8,5 +8,5 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AskViewController : UIViewController<UITextFieldDelegate>
+@interface AskViewController : UIViewController
 @end

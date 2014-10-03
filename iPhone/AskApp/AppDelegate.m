@@ -93,7 +93,7 @@
 - (void)handleRemoteNotification:(NSDictionary *)userInfo fromLaunch:(BOOL)fromLaunch {
     [AppDelegate clearCookies];
     HTTPClient *client = [HTTPClient sharedClient];
-    if ([userInfo[@"custom"] isEqualToString:@"reload_questions"]) {
+    if ([userInfo[@"custom"] isKindOfClass:[NSString class]] && [userInfo[@"custom"] isEqualToString:@"reload_questions"]) {
         UITabBarController *tabController = (UITabBarController *)self.window.rootViewController;
         if (tabController.selectedViewController.presentedViewController)
             [tabController.selectedViewController.presentedViewController dismissViewControllerAnimated:NO completion:nil];
@@ -172,10 +172,6 @@
     [self handleRemoteNotification:userInfo fromLaunch:NO];
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-    [self handleRemoteNotification:userInfo fromLaunch:NO];    
-}
-
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     return YES;
 }
@@ -226,8 +222,8 @@
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _sharedClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:@"http://localhost:8080"]];
-        //_sharedClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:@"http://aaask-app.appspot.com"]];
+        //_sharedClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:@"http://localhost:8080"]];
+        _sharedClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:@"http://aaask-app.appspot.com"]];
     });
     
     return _sharedClient;

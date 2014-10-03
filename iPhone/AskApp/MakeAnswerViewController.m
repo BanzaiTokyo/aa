@@ -6,10 +6,10 @@
 //
 //
 
-#import "AnswerViewController.h"
+#import "MakeAnswerViewController.h"
 #import "QuestionsViewController.h"
 
-@interface AnswerViewController ()<UITableViewDataSource, UITableViewDelegate> {
+@interface MakeAnswerViewController ()<UITableViewDataSource, UITableViewDelegate> {
     NSDictionary *question;
 }
 @property (strong, nonatomic) IBOutlet UILabel *textQuestion;
@@ -17,22 +17,30 @@
 @property (strong, nonatomic) IBOutlet UITextView *textAnswer;
 @property (weak, nonatomic) IBOutlet UIButton *btnSend;
 @property (weak, nonatomic) IBOutlet UITableView *answersTable;
+@property (weak, nonatomic) IBOutlet UILabel *textLength;
 @end
 
-@implementation AnswerViewController
+@implementation MakeAnswerViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     question = [AppDelegate sharedApp].profile[@"questions"][self.questionIdx];
     self.textQuestion.text = question[@"question"];
-    if ([question[@"status"] isEqualToString:@"new"])
-        return;
-    self.answerView.hidden = YES;
-    self.answersTable.hidden = NO;
-    [self.answersTable reloadData];
+    self.textLength.text = [NSString stringWithFormat:@"%d", MAX_TEXT_LENGTH];
+    if (![question[@"status"] isEqualToString:@"new"]) {
+        self.answerView.hidden = YES;
+        self.answersTable.hidden = NO;
+        [self.answersTable reloadData];
+    }
 }
 
--(void)viewWillDisappear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    if ([question[@"status"] isEqualToString:@"new"])
+        [self.textAnswer performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     if (self.isMovingFromParentViewController)
         [((QuestionsViewController *)self.navigationController.topViewController) showQuestion];
@@ -43,12 +51,15 @@
         [textView resignFirstResponder];
         return NO;
     }
+    if (textView.text.length + text.length - range.length > MAX_TEXT_LENGTH)
+        return NO;
     
     return YES;
 }
 
 - (void)textViewDidChange:(UITextView *)textView {
-    self.btnSend.enabled = textView.text.length > 0;    
+    self.btnSend.enabled = textView.text.length > 0;
+    self.textLength.text = [NSString stringWithFormat:@"%d", MAX_TEXT_LENGTH - self.textAnswer.text.length];
 }
 
 - (IBAction)answerQuestion:(id)sender {
@@ -58,6 +69,7 @@
         [UIAlertView showAlertViewWithTitle:@"Need more information" message:@"Your question is too short" cancelButtonTitle:@"OK" otherButtonTitles:nil];
         return;
     }
+    [self.textAnswer resignFirstResponder];
     [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeGradient];
     HTTPClient *client = [HTTPClient sharedClient];
     NSDictionary *params = @{@"question": question[@"id"],

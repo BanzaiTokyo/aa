@@ -82,7 +82,7 @@ def sendSingleApnsMessage(self, message, token):
 class SendPushMessage():
    def post(self, token, answerID, message):
       #Send a single message to a device token
-      message = {'request': {'data': {'custom': answerID}, 'ios_message': 'You have a new answer', 'ios_badge': 1}}
+      message = {'request': {'data': {'custom': answerID}, 'ios_message': message, 'ios_badge': 1}}
       message = convertToApnsMessage(self, message)
       sendSingleApnsMessage(self, message, token)
 

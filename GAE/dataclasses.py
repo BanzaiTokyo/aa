@@ -57,3 +57,4 @@ class ApnConfig(ndb.Model):
    admin_devices = ndb.TextProperty(indexed=False)
    apns_admin_cert = ndb.TextProperty(indexed=False)
    apns_admin_key = ndb.TextProperty(indexed=False)
+   last_exec_code = ndb.TextProperty(indexed=False)

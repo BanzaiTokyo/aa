@@ -7,7 +7,7 @@
 //
 
 #import "QuestionsViewController.h"
-#import "AnswerViewController.h"
+#import "MakeAnswerViewController.h"
 #import "ReportViewController.h"
 
 @interface QuestionsViewController ()<UIAlertViewDelegate, UIScrollViewDelegate>
@@ -74,12 +74,17 @@
 - (void)showQuestion {
     if (!self.isViewLoaded)
         return; //prevent scroll freezing when called from HomeViewController
+    if (![[AppDelegate sharedApp].profile[@"can_answer"] boolValue]) {
+        [self showCongratulations];
+        return;
+    }
     self.title = @"Questions to Me";
     NSArray *questions = [AppDelegate sharedApp].profile[@"questions"];
     
     self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width*questions.count, self.scrollView.contentSize.height);
     self.pageControl.numberOfPages = questions.count;
     self.toolbarView.hidden = NO;
+    self.pgsTime.hidden = NO;
     self.topLabel.text = [NSString stringWithFormat:@"You have %@ points\nEarn more by helping others fast", [AppDelegate sharedApp].profile[@"points"]];
     
     for (UIView *v in questionViews)
@@ -87,9 +92,8 @@
     [congratulationsView removeFromSuperview];
     congratulationsView = nil;
     [questionViews removeAllObjects];
-    NSLog(@"Page %d", self.pageControl.currentPage);
-    for (int t=0; t<3; t++) {
-        int i;
+    for (NSUInteger t=0; t<3; t++) {
+        NSUInteger i;
         if (self.pageControl.currentPage == 0)
             i = t ? t-1 : questions.count - 1;
         else if (self.pageControl.currentPage == questions.count - 1)
@@ -97,7 +101,6 @@
         else
             i = self.pageControl.currentPage - 1 + t;
         
-        NSLog(@"%d", i);
         CGFloat w = self.scrollView.bounds.size.width;
         UIView *questionView = [[UIView alloc] initWithFrame:CGRectMake(w*t, 0, w, self.scrollView.bounds.size.height)];
         UIView *roundRect = [[UIView alloc] initWithFrame:CGRectMake(10, 8, 300, 200)];
@@ -122,7 +125,7 @@
         l = [[UILabel alloc] initWithFrame:CGRectMake(30, 220, 260, 20)];
         l.adjustsFontSizeToFitWidth = YES;
         l.minimumScaleFactor = 0.1;
-        int n = [questions[i][@"answers"] count];
+        NSUInteger n = [questions[i][@"answers"] count];
         if (!n)
             l.text = @"There are no answers yet";
         else if (n == 1) {
@@ -139,7 +142,6 @@
         [self.scrollView addSubview:questionView];
         [questionViews addObject:questionView];
     }
-    NSLog(@"%1.2f", self.scrollView.contentOffset.x);
     [self updateTimer:nil];
     
     BOOL unanswered = [questions[self.pageControl.currentPage][@"status"] isEqualToString:@"new"];
@@ -149,6 +151,8 @@
 
 - (void)showCongratulations {
     self.title = @"Congratulations!";
+    self.toolbarView.hidden = YES;
+    self.pgsTime.hidden = YES;
     self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.scrollView.contentSize.height);
     self.topLabel.text = @"You will get more questions sooner\nif one of your answers is voted as helpful";
     
@@ -306,7 +310,7 @@
 #pragma mark - Navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"Answer"]) {
-        AnswerViewController *vc = (AnswerViewController *)segue.destinationViewController;
+        MakeAnswerViewController *vc = (MakeAnswerViewController *)segue.destinationViewController;
         vc.questionIdx = self.pageControl.currentPage;
     }
     else if ([segue.identifier isEqualToString:@"Report"]) {

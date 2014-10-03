@@ -18,7 +18,7 @@
 		8E1D4207197EECCC00CF68D6 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E1D4206197EECCC00CF68D6 /* HomeViewController.m */; };
 		8E1D4209197EECCC00CF68D6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E1D4208197EECCC00CF68D6 /* Images.xcassets */; };
 		8E1D4227197FAD9200CF68D6 /* AskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E1D4226197FAD9200CF68D6 /* AskViewController.m */; };
-		8E1D422A197FADA200CF68D6 /* AnswerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E1D4229197FADA200CF68D6 /* AnswerViewController.m */; };
+		8E1D422A197FADA200CF68D6 /* MakeAnswerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E1D4229197FADA200CF68D6 /* MakeAnswerViewController.m */; };
 		8E1D422D197FB60500CF68D6 /* LoginRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E1D422C197FB60500CF68D6 /* LoginRegisterViewController.m */; };
 		8E1D4230197FEB1B00CF68D6 /* MyAnswersTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E1D422F197FEB1B00CF68D6 /* MyAnswersTableViewController.m */; };
 		8E73775F19BDC7F2003A3541 /* icon-query.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E73775C19BDC7F2003A3541 /* icon-query.png */; };
@@ -54,8 +54,8 @@
 		8E1D420F197EECCC00CF68D6 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		8E1D4225197FAD9200CF68D6 /* AskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AskViewController.h; sourceTree = "<group>"; };
 		8E1D4226197FAD9200CF68D6 /* AskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AskViewController.m; sourceTree = "<group>"; };
-		8E1D4228197FADA200CF68D6 /* AnswerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnswerViewController.h; sourceTree = "<group>"; };
-		8E1D4229197FADA200CF68D6 /* AnswerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnswerViewController.m; sourceTree = "<group>"; };
+		8E1D4228197FADA200CF68D6 /* MakeAnswerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MakeAnswerViewController.h; sourceTree = "<group>"; };
+		8E1D4229197FADA200CF68D6 /* MakeAnswerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MakeAnswerViewController.m; sourceTree = "<group>"; };
 		8E1D422B197FB60500CF68D6 /* LoginRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginRegisterViewController.h; sourceTree = "<group>"; };
 		8E1D422C197FB60500CF68D6 /* LoginRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginRegisterViewController.m; sourceTree = "<group>"; };
 		8E1D422E197FEB1B00CF68D6 /* MyAnswersTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAnswersTableViewController.h; sourceTree = "<group>"; };
@@ -148,8 +148,8 @@
 				8E1D422C197FB60500CF68D6 /* LoginRegisterViewController.m */,
 				8E1D4225197FAD9200CF68D6 /* AskViewController.h */,
 				8E1D4226197FAD9200CF68D6 /* AskViewController.m */,
-				8E1D4228197FADA200CF68D6 /* AnswerViewController.h */,
-				8E1D4229197FADA200CF68D6 /* AnswerViewController.m */,
+				8E1D4228197FADA200CF68D6 /* MakeAnswerViewController.h */,
+				8E1D4229197FADA200CF68D6 /* MakeAnswerViewController.m */,
 				8E1D4205197EECCC00CF68D6 /* HomeViewController.h */,
 				8E1D4206197EECCC00CF68D6 /* HomeViewController.m */,
 				8E1D4208197EECCC00CF68D6 /* Images.xcassets */,
@@ -284,7 +284,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8E1D4227197FAD9200CF68D6 /* AskViewController.m in Sources */,
-				8E1D422A197FADA200CF68D6 /* AnswerViewController.m in Sources */,
+				8E1D422A197FADA200CF68D6 /* MakeAnswerViewController.m in Sources */,
 				8E73776819C15F9A003A3541 /* QuestionsViewController.m in Sources */,
 				8E1D4207197EECCC00CF68D6 /* HomeViewController.m in Sources */,
 				8E99AC7319A1DB7600C06C17 /* TabsController.m in Sources */,
@@ -403,6 +403,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AskApp/AskApp-Prefix.pch";
 				INFOPLIST_FILE = "AskApp/AskApp-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = AskApp;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -419,6 +420,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AskApp/AskApp-Prefix.pch";
 				INFOPLIST_FILE = "AskApp/AskApp-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = AskApp;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;

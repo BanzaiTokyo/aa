@@ -246,7 +246,7 @@
                                                     <outlet property="delegate" destination="vXZ-lx-hvc" id="q62-zM-YmA"/>
                                                 </connections>
                                             </textView>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dTY-z9-vcf">
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dTY-z9-vcf">
                                                 <rect key="frame" x="264" y="310" width="46" height="30"/>
                                                 <state key="normal" title="Ask">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -256,9 +256,15 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="1ZV-W5-Ejg">
-                                                <rect key="frame" x="10" y="150" width="300" height="152"/>
+                                                <rect key="frame" x="10" y="178" width="300" height="134"/>
                                                 <string key="text">Even thought you do not know who is going to answer your question, keep in mind that it is going to be a real person. Here are some hints: - Be polite - Don't ask questions that Google could answer - Don't expect an encyclopedic accuracy</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="140" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="emA-o4-5WL">
+                                                <rect key="frame" x="269" y="157" width="32" height="21"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
@@ -274,6 +280,8 @@
                     <tabBarItem key="tabBarItem" title="Ask" image="icon-question-sign.png" id="L9q-qe-urp"/>
                     <navigationItem key="navigationItem" id="tyq-CD-yff"/>
                     <connections>
+                        <outlet property="btnAsk" destination="dTY-z9-vcf" id="HFO-3r-Ku3"/>
+                        <outlet property="textLength" destination="emA-o4-5WL" id="kDd-8z-7jE"/>
                         <outlet property="textQuestion" destination="lho-W9-dFr" id="wC5-JM-Zq5"/>
                     </connections>
                 </viewController>
@@ -813,7 +821,7 @@
         <!--Question to Me-->
         <scene sceneID="koZ-Iq-RRQ">
             <objects>
-                <viewController id="pN5-Ro-W9M" customClass="AnswerViewController" sceneMemberID="viewController">
+                <viewController id="pN5-Ro-W9M" customClass="MakeAnswerViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="JvQ-Yb-9fw"/>
                         <viewControllerLayoutGuide type="bottom" id="AiU-zX-u5g"/>
@@ -844,30 +852,6 @@
                                                         <integer key="value" value="20"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
-                                            </view>
-                                            <view autoresizesSubviews="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YLm-rV-Dcs" userLabel="AnswerTextView">
-                                                <rect key="frame" x="0.0" y="172" width="320" height="130"/>
-                                                <subviews>
-                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MjQ-A8-VTO">
-                                                        <rect key="frame" x="10" y="1" width="300" height="86"/>
-                                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                                        <connections>
-                                                            <outlet property="delegate" destination="pN5-Ro-W9M" id="rqh-Pa-pDz"/>
-                                                        </connections>
-                                                    </textView>
-                                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qAi-cy-Wop">
-                                                        <rect key="frame" x="240" y="100" width="70" height="30"/>
-                                                        <state key="normal" title="Send">
-                                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="answerQuestion:" destination="pN5-Ro-W9M" eventType="touchUpInside" id="rPJ-pm-z6Y"/>
-                                                        </connections>
-                                                    </button>
-                                                </subviews>
-                                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                             </view>
                                             <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="xtm-z2-RyC">
                                                 <rect key="frame" x="10" y="172" width="300" height="273"/>
@@ -903,6 +887,36 @@
                                                     <outlet property="delegate" destination="pN5-Ro-W9M" id="jii-lz-4jy"/>
                                                 </connections>
                                             </tableView>
+                                            <view autoresizesSubviews="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YLm-rV-Dcs" userLabel="AnswerTextView">
+                                                <rect key="frame" x="0.0" y="172" width="320" height="130"/>
+                                                <subviews>
+                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MjQ-A8-VTO">
+                                                        <rect key="frame" x="10" y="1" width="300" height="86"/>
+                                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="pN5-Ro-W9M" id="rqh-Pa-pDz"/>
+                                                        </connections>
+                                                    </textView>
+                                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qAi-cy-Wop">
+                                                        <rect key="frame" x="258" y="100" width="52" height="30"/>
+                                                        <state key="normal" title="Send">
+                                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="answerQuestion:" destination="pN5-Ro-W9M" eventType="touchUpInside" id="rPJ-pm-z6Y"/>
+                                                        </connections>
+                                                    </button>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="140 " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s33-xQ-W9c">
+                                                        <rect key="frame" x="207" y="104" width="33" height="21"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                     </view>
@@ -918,6 +932,7 @@
                         <outlet property="answersTable" destination="xtm-z2-RyC" id="5QD-vm-Dnx"/>
                         <outlet property="btnSend" destination="qAi-cy-Wop" id="LRv-TN-hgj"/>
                         <outlet property="textAnswer" destination="MjQ-A8-VTO" id="2wf-hn-LU1"/>
+                        <outlet property="textLength" destination="s33-xQ-W9c" id="t19-Qa-DCk"/>
                         <outlet property="textQuestion" destination="7ie-RM-Dmb" id="skH-j1-R84"/>
                     </connections>
                 </viewController>
